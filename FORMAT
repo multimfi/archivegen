@@ -12,7 +12,7 @@ f <src> <dst> <perm> <user> <group>
 
 // recursive
 // src prefix is stripped from dst
-R <src> <dst>
+R <src> <dst> <uid> <gid>
 
 // createfile
 c <dst> <mode> <user> <group> <data...>

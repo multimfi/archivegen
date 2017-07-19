@@ -47,7 +47,11 @@ func (m *Map) add(e entry) error {
 	case TypeLinked:
 		return m.addElf(E)
 	case TypeRecursive:
-		return m.addRecursive(E)
+		return m.addRecursive(
+			E,
+			e.isSet(idxUser),
+			e.isSet(idxGroup),
+		)
 	}
 
 	if i, exists := m.m[E.Dst]; exists {
@@ -115,13 +119,29 @@ func (m *Map) Merge(t *Map) error {
 	return nil
 }
 
-func (m *Map) addRecursive(e Entry) error {
-	return filepath.Walk(e.Src, mapW{m, e}.walkFunc)
+func (m *Map) addRecursive(e Entry, user, group bool) error {
+	var uid, gid *int
+	if user {
+		uid = &e.User
+	}
+	if group {
+		gid = &e.Group
+	}
+	return filepath.Walk(e.Src, mapW{m, e, uid, gid}.walkFunc)
 }
 
 type mapW struct {
-	m *Map
-	e Entry
+	m   *Map
+	e   Entry
+	uid *int
+	gid *int
+}
+
+func intPtr(i *int, d uint32) int {
+	if i != nil {
+		return *i
+	}
+	return int(d)
 }
 
 func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
@@ -154,8 +174,8 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 		m.m.Add(Entry{
 			rf,
 			rf,
-			int(stat.Uid),
-			int(stat.Gid),
+			intPtr(m.uid, stat.Uid),
+			intPtr(m.gid, stat.Gid),
 			mode(info),
 			TypeDirectory,
 			nil,
@@ -167,8 +187,8 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 		m.m.Add(Entry{
 			file,
 			rf,
-			int(stat.Uid),
-			int(stat.Gid),
+			intPtr(m.uid, stat.Uid),
+			intPtr(m.gid, stat.Gid),
 			mode(info),
 			TypeRegular,
 			nil,
@@ -185,8 +205,8 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 		m.m.Add(Entry{
 			f,
 			rf,
-			int(stat.Uid),
-			int(stat.Gid),
+			intPtr(m.uid, stat.Uid),
+			intPtr(m.gid, stat.Gid),
 			0777,
 			TypeSymlink,
 			nil,

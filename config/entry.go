@@ -139,7 +139,7 @@ func (e entry) Mode() (int, error) {
 
 	// src field omitted
 	if t == TypeDirectory || t == TypeCreate {
-		i -= 1
+		i--
 	}
 
 	if len(e) <= i || e[i] == TypeOmit {
@@ -171,11 +171,29 @@ func (e entry) Mode() (int, error) {
 	return int(m), nil
 }
 
-func (e entry) parseIndex(i int) (int, error) {
-	t := e.Type()
-	if t == TypeDirectory || t == TypeCreate {
-		i -= 1
+func (e entry) typeOffset(i int) int {
+	switch e.Type() {
+	case
+		TypeRecursive,
+		TypeDirectory,
+		TypeCreate:
+		i--
 	}
+	return i
+}
+
+func (e entry) isSet(i int) bool {
+	i = e.typeOffset(i)
+
+	if len(e) <= i || e[i] == TypeOmit {
+		return false
+	}
+	return true
+}
+
+func (e entry) parseIndex(i int) (int, error) {
+	i = e.typeOffset(i)
+
 	if len(e) <= i || e[i] == TypeOmit {
 		return 0, nil
 	}
