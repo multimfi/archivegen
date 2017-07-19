@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path"
-	"strings"
 )
 
 var (
@@ -17,47 +16,70 @@ var (
 	errNoArguments  = errors.New("config: no arguments")
 )
 
-type ctx struct {
-	l int
-	r rune
-	n int
-	f int
-}
-
 func split(r rune) bool {
 	return r == ' ' || r == '\t'
 }
 
-func (c *ctx) split(r rune) bool {
-	if c.n == 0 {
-		c.r = r
-	}
-	if c.r != 'c' {
-		return split(r)
-	}
-	if c.n >= c.l {
-		c.n = 0
-		c.f = 0
-	}
+func fieldsFuncN(s string, n int, f func(rune) bool) []string {
+	var (
+		c   int
+		inN bool
+		inB bool
+	)
 
-	c.n++
+	// Count fields to avoid allocations.
+	for _, v := range s {
+		if n > 0 && c >= n {
+			break
+		}
 
-	if c.f >= idxData-1 {
-		return false
-	}
-
-	if split(r) {
-		c.f++
-		return true
+		inB = !inN
+		inN = !f(v)
+		if inN && inB {
+			c++
+		}
 	}
 
-	return false
-}
+	// Create slice with the expected length.
+	ret := make([]string, c)
 
-func nc(r string) func(rune) bool {
-	return (&ctx{
-		l: len(r),
-	}).split
+	var (
+		na int
+		fs int
+		is bool
+	)
+
+	// Set to -1 when looking for start of field.
+	fs = -1
+
+	for k, v := range s {
+		// After Nth field, all remaining is the last field.
+		if n > 0 && na >= c-1 {
+			fs = k
+			break
+		}
+
+		is = f(v)
+
+		// In and not at start
+		if is && fs > -1 {
+			ret[na] = s[fs:k]
+			na++
+			fs = -1
+		}
+
+		// Not in and looking for start.
+		if !is && fs < 0 {
+			fs = k
+		}
+	}
+
+	// Add last field.
+	if fs > -1 {
+		ret[na] = s[fs:]
+	}
+
+	return ret
 }
 
 // TODO: error handling
@@ -80,7 +102,13 @@ func FromReader(r io.Reader) *Map {
 			continue
 		}
 
-		f := strings.FieldsFunc(d, nc(d))
+		var f []string
+		if d[0] != 'c' {
+			f = fieldsFuncN(d, -1, split)
+		} else {
+			f = fieldsFuncN(d, idxData, split)
+		}
+
 		if len(f) < 2 {
 			log.Printf("error: %s, line %d", errNoArguments, n)
 			continue

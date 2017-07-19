@@ -27,7 +27,7 @@ f disk archive
 
 # recursive lookup from disk.
 # R src dst
-c dst - - - test		  test  
+c   dst   -	 -   -	 test		  test  
 
 # does lookup from disk.
 # L elf dst
@@ -67,7 +67,7 @@ var testMap = Map{
 	A: []Entry{
 		{"name", "name", 0, 0, 0, TypeDirectory, nil},
 		{"disk", "archive", 0, 0, 0644, TypeRegular, nil},
-		{"dst", "dst", 0, 0, 0644, TypeCreate, []byte("test		  test  ")},
+		{"dst", "dst", 0, 0, 0644, TypeCreate, []byte("test		  test  \n")},
 		{"busybox", "sh", 0, 0, 0777, TypeSymlink, nil},
 		{"omit_test1", "omit_test1", 0, 0, 0644, TypeRegular, nil},
 		{"omit_test2", "omit_test2", 0, 0, 0644, TypeRegular, nil},
@@ -124,7 +124,12 @@ func TestResolve(t *testing.T) {
 			t.Fatalf("key %q does not exist", k)
 		}
 		if !equal(&m1.A[rI], &testMap.A[v]) {
-			t.Fatalf("slice does not equal %v != %v", m1.A[rI], testMap.A[v])
+			t.Fatalf("slice does not equal\n%v\n%v\n%q\n%q",
+				m1.A[rI],
+				testMap.A[v],
+				m1.A[rI].Data,
+				testMap.A[v].Data,
+			)
 		}
 	}
 }

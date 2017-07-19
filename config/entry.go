@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -126,7 +127,7 @@ func (e entry) Dst() (string, error) {
 
 	}
 
-	log.Printf("error: %v", e)
+	log.Printf("error: %#v", e)
 	return "", errInvalidEntry
 }
 
@@ -196,7 +197,12 @@ func (e entry) Data() []byte {
 	if e.Type() != TypeCreate {
 		return nil
 	}
-	return []byte(e[idxData-1])
+	return []byte(
+		strings.TrimLeft(
+			e[idxData-1],
+			" \t",
+		) + "\n",
+	)
 }
 
 func (e entry) Entry() (Entry, error) {
@@ -240,7 +246,7 @@ func (e entry) Entry() (Entry, error) {
 func (e Entry) Format() string {
 	switch e.Type {
 	case TypeDirectory:
-		return fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d",
+		return fmt.Sprintf("%s\t\t%s\t%04o\t%d\t%d",
 			e.Type,
 			e.Dst,
 			e.Mode,
@@ -249,13 +255,15 @@ func (e Entry) Format() string {
 		)
 
 	case TypeCreate:
-		return fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t%s",
-			e.Type,
-			e.Dst,
-			e.Mode,
-			e.User,
-			e.Group,
-			e.Data,
+		return strings.TrimRight(
+			fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t%s",
+				e.Type,
+				e.Dst,
+				e.Mode,
+				e.User,
+				e.Group,
+				e.Data,
+			), "\n",
 		)
 	}
 
