@@ -64,15 +64,20 @@ func getArchive(fmt string, dst io.Writer) archive.Writer {
 
 var (
 	flagOut     = flag.String("out", "out.archive", "output file")
-	flagFormat  = flag.String("fmt", "cpio", "file format, cpio/tar")
-	flagPrint   = flag.Bool("print", false, "print resolved tree")
+	flagFormat  = flag.String("fmt", "tar", "file format, cpio/tar")
+	flagPrint   = flag.Bool("print", false, "print resolved tree in archivegen format")
 	flagStdout  = flag.Bool("stdout", false, "output to stdout")
 	flagVersion = flag.Bool("version", false, "version")
 )
 
 func main() {
-	flag.Parse()
 	log.SetFlags(log.Lshortfile)
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "%s %s\n\n", "archivegen", "[OPTIONS...] [FILES...]")
+		flag.PrintDefaults()
+		fmt.Fprintln(os.Stderr, helpFormat)
+	}
+	flag.Parse()
 
 	if *flagStdout {
 		flagOut = nil
