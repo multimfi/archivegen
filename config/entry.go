@@ -107,7 +107,7 @@ func (e entry) Dst() (string, error) {
 		return clean(e[1]), nil
 
 	case TypeLinked:
-		if len(e) > 2 {
+		if len(e) > 2 && e[2] != TypeOmit {
 			return clean(e[2]), nil
 		}
 		return clean(e[1]), nil
