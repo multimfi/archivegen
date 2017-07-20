@@ -16,30 +16,43 @@ type Node struct {
 }
 
 func (n *Node) Print(p string, w io.Writer) {
-	var d []string
-	for _, v := range mapsort(n.Map) {
+	var (
+		d []string
+		m []string
+		l int
+	)
+
+	m = mapsort(n.Map)
+	l = len(m)
+
+	for i := 0; i < l; i++ {
+		v := m[i]
+
 		if n.Map[v].E.Type == config.TypeDirectory {
 			d = append(d, v)
 			continue
 		}
+
 		fmt.Fprintln(w, n.Map[v].E.Format())
+
+		if i >= l-1-len(d) {
+			fmt.Fprintln(w)
+		}
 	}
-	if p != "" {
-		fmt.Fprintln(w)
-	}
+
 	for _, v := range d {
 		var dn string
+
 		if p != "" {
 			dn = p + "/" + v
 		} else {
 			dn = v
 		}
-
 		if dn == "" {
 			panic("empty dn")
 		}
-		n.Map[v].E.Dst = dn
 
+		n.Map[v].E.Dst = dn
 		fmt.Fprintln(w, n.Map[v].E.Format())
 
 		n.Map[v].Print(dn, w)
