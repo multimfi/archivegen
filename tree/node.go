@@ -158,15 +158,20 @@ func Render(cfg *config.Map) *Node {
 
 		tree := root
 		for i := 0; i < len(p); i++ {
-			if v.Type == config.TypeDirectory || i != len(p)-1 {
-				// TODO: mask.
+			// TODO: mask.
+			if i != len(p)-1 {
 				d := v
-				d.Type = config.TypeDirectory
-				d.Mode = 0755
 				d.Src = p[i]
+
+				if v.Type != config.TypeDirectory {
+					d.Mode = 0755
+				}
+
+				d.Type = config.TypeDirectory
 				tree = tree.Add(p[i], d)
 				continue
 			}
+
 			tree = tree.Add(p[i], v)
 			break
 		}
