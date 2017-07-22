@@ -2,8 +2,6 @@ package config
 
 import "os"
 
-const digits = "01234567"
-
 func mode(f os.FileInfo) int {
 	m := f.Mode()
 	r := m.Perm()
