@@ -3,6 +3,7 @@ package elf
 import (
 	"debug/elf"
 	"path"
+	"strings"
 	"syscall"
 )
 
@@ -11,13 +12,6 @@ var (
 	fAccess = access
 	eOpen   = elfOpen
 )
-
-var libpaths = []string{
-	"/usr/lib",
-	"/usr/lib64",
-	"/lib",
-	"/lib64",
-}
 
 type errorNotFound struct {
 	e string
@@ -40,10 +34,56 @@ func search(f string, d []string) (string, error) {
 		}
 		return ret, nil
 	}
-	return ret, errorNotFound{f}
+	return ret, errorNotFound{ret}
 }
 
-func resolv(file string, ret map[string]string) error {
+func split(a []string) []string {
+	var r []string
+	for _, v := range a {
+		r = append(r, strings.Split(v, ":")...)
+	}
+	return r
+}
+
+type order map[string]int
+
+func (o order) copy() order {
+	r := make(order, len(o))
+	for k, v := range o {
+		r[k] = v
+	}
+	return r
+}
+
+func (o order) add(s ...string) order {
+	var (
+		c bool
+		r order = o
+	)
+
+	for _, v := range s {
+		if _, exists := r[v]; exists {
+			continue
+		}
+		if !c {
+			r = r.copy()
+			c = true
+		}
+		r[v] = len(o)
+	}
+
+	return r
+}
+
+func (o order) list() []string {
+	r := make([]string, len(o))
+	for k, v := range o {
+		r[v] = k
+	}
+	return r
+}
+
+func resolv(file string, ret map[string]string, lp order) error {
 	_, ff := path.Split(file)
 	if _, exists := ret[ff]; exists {
 		return nil
@@ -54,7 +94,6 @@ func resolv(file string, ret map[string]string) error {
 		n  []string
 		r1 []string
 		r2 []string
-		lp []string
 	)
 
 	f, err := eOpen(file)
@@ -79,15 +118,15 @@ func resolv(file string, ret map[string]string) error {
 		return err
 	}
 
-	lp = append(lp, r1...)
-	lp = append(lp, r2...)
+	lp = lp.add(split(r1)...)
+	lp = lp.add(split(r2)...)
 
 	for _, v := range n {
-		s, err := search(v, append(lp, libpaths...))
+		s, err := search(v, lp.list())
 		if err != nil {
 			return err
 		}
-		if err := resolv(s, ret); err != nil {
+		if err := resolv(s, ret, lp); err != nil {
 			return err
 		}
 		ret[v] = s
@@ -95,10 +134,17 @@ func resolv(file string, ret map[string]string) error {
 	return nil
 }
 
+var libpaths = order{
+	"/usr/lib":   0,
+	"/usr/lib64": 1,
+	"/lib":       2,
+	"/lib64":     3,
+}
+
 // Resolve resolves libraries needed by an ELF file.
 func Resolve(file string) (map[string]string, error) {
 	ret := make(map[string]string)
-	if err := resolv(file, ret); err != nil {
+	if err := resolv(file, ret, libpaths); err != nil {
 		return nil, err
 	}
 	return ret, nil
