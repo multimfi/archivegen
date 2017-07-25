@@ -44,5 +44,6 @@ Format:
     c *dst mode uid gid *data
 
   Elf
-    L *elf dst mode uid gid
+    // elf is prefixed with rootfs when it is not omitted
+    L *elf dst mode uid gid rootfs
 ```
