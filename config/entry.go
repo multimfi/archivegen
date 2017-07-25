@@ -223,6 +223,23 @@ func (e entry) Data() []byte {
 	)
 }
 
+func (e entry) Root() *string {
+	if e.Type() != TypeLinked {
+		return nil
+	}
+	// idxData = idxRoot
+	if len(e) <= idxData {
+		return nil
+	}
+
+	idx := e[idxData]
+	if idx != TypeOmit {
+		return &idx
+	}
+
+	return nil
+}
+
 func (e entry) Entry() (Entry, error) {
 	var (
 		r   Entry

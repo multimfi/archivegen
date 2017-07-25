@@ -1,6 +1,6 @@
 package main
 
-// TODO: ignore/user/group/mode mask.
+// TODO: ignore/user/group/mode/copy/hardlink/rename/prefix mask.
 
 const helpFormat = `
 Format:
@@ -33,4 +33,5 @@ Format:
     c *dst mode uid gid *data
 
   Elf
-    L *elf dst mode uid gid`
+    // elf is prefixed with rootfs when it is not omitted
+    L *elf dst mode uid gid rootfs`

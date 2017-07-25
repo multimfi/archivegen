@@ -45,7 +45,7 @@ func (m *Map) add(e entry) error {
 
 	switch E.Type {
 	case TypeLinked:
-		return m.addElf(E)
+		return m.addElf(E, e.Root())
 	case TypeRecursive:
 		return m.addRecursive(
 			E,
@@ -74,13 +74,22 @@ func (m *Map) Add(e Entry) {
 	m.m[e.Dst] = len(m.A) - 1
 }
 
-func (m *Map) addElf(e Entry) error {
-	r, err := elf.Resolve(e.Src)
+func (m *Map) addElf(e Entry, rootfs *string) error {
+	var (
+		r   []string
+		err error
+	)
+	if rootfs != nil {
+		r, err = elf.ResolveWithRoot(e.Src, *rootfs)
+	} else {
+		r, err = elf.Resolve(e.Src)
+	}
+
 	if err != nil {
 		return err
 	}
 
-	// TODO: modes
+	// TODO: masks
 	m.Add(Entry{
 		e.Src,
 		e.Dst,
@@ -90,12 +99,14 @@ func (m *Map) addElf(e Entry) error {
 		TypeRegular,
 		nil,
 	})
-	delete(r, path.Base(e.Src))
 
 	for _, v := range r {
 		// '/usr/lib/lib.so'
 
 		dst := path.Clean(v)
+		if rootfs != nil {
+			dst = strings.TrimPrefix(dst, *rootfs)
+		}
 		dst = strings.TrimPrefix(dst, "/")
 
 		m.Add(Entry{
