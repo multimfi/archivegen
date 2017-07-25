@@ -3,6 +3,7 @@ package elf
 import (
 	"debug/elf"
 	"errors"
+	"sort"
 	"testing"
 )
 
@@ -51,7 +52,7 @@ func mapOpen(d map[string]ef) func(f string) (elfFile, error) {
 	}
 }
 
-func testResolve(t *testing.T, f string, re map[string]string, data map[string]ef) {
+func testResolve(t *testing.T, f string, re []string, data map[string]ef) {
 	eOpen = mapOpen(data)
 	fAccess = mapAccess(data)
 
@@ -64,16 +65,12 @@ func testResolve(t *testing.T, f string, re map[string]string, data map[string]e
 		t.Fatalf("len w(%d) != r(%d)", w, r)
 	}
 
+	sort.Strings(r)
+	sort.Strings(re)
+
 	for k, v := range re {
-		var (
-			rV     string
-			exists bool
-		)
-		if rV, exists = r[k]; !exists {
-			t.Fatalf("key %q does not exist", k)
-		}
-		if rV != v {
-			t.Fatalf("value does not equal %q != %q", rV, v)
+		if h := r[k]; v != h {
+			t.Fatalf("have != want, %s != %s", v, h)
 		}
 	}
 }
