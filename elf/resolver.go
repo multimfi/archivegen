@@ -2,10 +2,14 @@ package elf
 
 import (
 	"debug/elf"
+	"io/ioutil"
 	"path"
+	"path/filepath"
 	"strings"
 	"syscall"
 )
+
+const ldConfigDir = "/etc/ld.so.conf.d/*"
 
 // for testing
 var (
@@ -25,10 +29,10 @@ func access(f string) error {
 	return syscall.Access(f, syscall.F_OK)
 }
 
-func search(f string, d []string) (string, error) {
+func search(f string, d []string, rootfs *string) (string, error) {
 	var ret string
 	for _, v := range d {
-		ret = path.Join(v, f)
+		ret = path.Join(rPath(v, rootfs), f)
 		if err := fAccess(ret); err != nil {
 			continue
 		}
@@ -58,7 +62,7 @@ func (o order) copy() order {
 func (o order) add(s ...string) order {
 	var (
 		c bool
-		r order = o
+		r = o
 	)
 
 	for _, v := range s {
@@ -83,12 +87,44 @@ func (o order) list() []string {
 	return r
 }
 
-func resolv(file string, ret map[string]string, lp order) error {
-	_, ff := path.Split(file)
-	if _, exists := ret[ff]; exists {
+func rPath(file string, rootfs *string) string {
+	if rootfs == nil {
+		return file
+	}
+	if *rootfs == "" {
+		return file
+	}
+	return path.Join(*rootfs, file)
+}
+
+type set map[string]struct{}
+
+func (s set) add(key string) bool {
+	if _, exists := s[key]; exists {
+		return exists
+	}
+
+	s[key] = struct{}{}
+
+	return false
+}
+
+func (s set) list() []string {
+	var (
+		r = make([]string, len(s))
+		i int
+	)
+	for k, _ := range s {
+		r[i] = k
+		i++
+	}
+	return r
+}
+
+func resolv(file string, lp order, rootfs *string, ret set) error {
+	if ret.add(file) {
 		return nil
 	}
-	ret[ff] = file
 
 	var (
 		n  []string
@@ -122,30 +158,71 @@ func resolv(file string, ret map[string]string, lp order) error {
 	lp = lp.add(split(r2)...)
 
 	for _, v := range n {
-		s, err := search(v, lp.list())
+		s, err := search(v, lp.list(), rootfs)
 		if err != nil {
 			return err
 		}
-		if err := resolv(s, ret, lp); err != nil {
+		if err := resolv(s, lp, rootfs, ret); err != nil {
 			return err
 		}
-		ret[v] = s
+		ret.add(s)
 	}
 	return nil
 }
 
-var libpaths = order{
+var defaultLibs = order{
 	"/usr/lib":   0,
 	"/usr/lib64": 1,
 	"/lib":       2,
 	"/lib64":     3,
 }
 
-// Resolve resolves libraries needed by an ELF file.
-func Resolve(file string) (map[string]string, error) {
-	ret := make(map[string]string)
-	if err := resolv(file, ret, libpaths); err != nil {
+func ldGlob(glob string) ([]string, error) {
+	r, err := filepath.Glob(glob)
+	if err != nil {
+		// filepath.Glob only returns ErrBadPattern,
+		// this should not happen.
+		panic(err.Error() + " " + glob)
+	}
+
+	var ret []string
+	for _, v := range r {
+		f, err := ioutil.ReadFile(v)
+		if err != nil {
+			return nil, err
+		}
+		data := strings.TrimRight(string(f), "\n")
+		ret = append(ret, strings.Split(data, "\n")...)
+	}
+
+	return ret, nil
+}
+
+func resolve(file string, rootfs *string) ([]string, error) {
+	ld, err := ldGlob(rPath(ldConfigDir, rootfs))
+	if err != nil {
 		return nil, err
 	}
-	return ret, nil
+
+	ret := make(set)
+	if err := resolv(
+		rPath(file, rootfs),
+		defaultLibs.add(ld...),
+		rootfs,
+		ret,
+	); err != nil {
+		return nil, err
+	}
+
+	return ret.list(), nil
+}
+
+// Resolve resolves libraries needed by an ELF file.
+func Resolve(file string) ([]string, error) {
+	return resolve(file, nil)
+}
+
+// ResolveWithRoot searches libraries from rootfs.
+func ResolveWithRoot(file, rootfs string) ([]string, error) {
+	return resolve(file, &rootfs)
 }
