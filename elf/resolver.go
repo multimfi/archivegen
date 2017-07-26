@@ -4,12 +4,11 @@ import (
 	"debug/elf"
 	"io/ioutil"
 	"path"
-	"path/filepath"
 	"strings"
 	"syscall"
 )
 
-const ldConfigDir = "/etc/ld.so.conf.d/*"
+const ldConfigDir = "/etc/ld.so.conf.d"
 
 // for testing
 var (
@@ -183,17 +182,20 @@ var defaultLibs = libOrder{
 	"/lib64":     3,
 }
 
-func ldGlob(glob string) ([]string, error) {
-	r, err := filepath.Glob(glob)
+func ldList(dir string) ([]string, error) {
+	var ret []string
+
+	d, err := ioutil.ReadDir(dir)
 	if err != nil {
-		// filepath.Glob only returns ErrBadPattern,
-		// this should not happen.
-		panic(err.Error() + " " + glob)
+		// non-fatal
+		return ret, nil
 	}
 
-	var ret []string
-	for _, v := range r {
-		f, err := ioutil.ReadFile(v)
+	for _, v := range d {
+		if v.IsDir() {
+			continue
+		}
+		f, err := ioutil.ReadFile(path.Join(dir, v.Name()))
 		if err != nil {
 			return nil, err
 		}
@@ -205,7 +207,7 @@ func ldGlob(glob string) ([]string, error) {
 }
 
 func resolve(file string, rootfs *string) ([]string, error) {
-	ld, err := ldGlob(rPath(ldConfigDir, rootfs))
+	ld, err := ldList(rPath(ldConfigDir, rootfs))
 	if err != nil {
 		return nil, err
 	}
