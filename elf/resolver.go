@@ -49,23 +49,29 @@ func split(a []string) []string {
 	return r
 }
 
-type order map[string]int
+type libOrder map[string]int
 
-func (o order) copy() order {
-	r := make(order, len(o))
+func (o libOrder) copy() libOrder {
+	r := make(libOrder, len(o))
 	for k, v := range o {
 		r[k] = v
 	}
 	return r
 }
 
-func (o order) add(s ...string) order {
+func (o libOrder) add(s ...string) libOrder {
 	var (
 		c bool
 		r = o
 	)
 
 	for _, v := range s {
+		if len(v) < 1 {
+			continue
+		}
+		if v[0] != '/' {
+			continue
+		}
 		if _, exists := r[v]; exists {
 			continue
 		}
@@ -73,13 +79,13 @@ func (o order) add(s ...string) order {
 			r = r.copy()
 			c = true
 		}
-		r[v] = len(o)
+		r[v] = len(r)
 	}
 
 	return r
 }
 
-func (o order) list() []string {
+func (o libOrder) list() []string {
 	r := make([]string, len(o))
 	for k, v := range o {
 		r[v] = k
@@ -121,7 +127,7 @@ func (s set) list() []string {
 	return r
 }
 
-func resolv(file string, lp order, rootfs *string, ret set) error {
+func resolv(file string, lp libOrder, rootfs *string, ret set) error {
 	if ret.add(file) {
 		return nil
 	}
@@ -170,7 +176,7 @@ func resolv(file string, lp order, rootfs *string, ret set) error {
 	return nil
 }
 
-var defaultLibs = order{
+var defaultLibs = libOrder{
 	"/usr/lib":   0,
 	"/usr/lib64": 1,
 	"/lib":       2,
