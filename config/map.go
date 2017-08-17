@@ -18,6 +18,7 @@ const (
 	TypeSymlink   = "l"
 	TypeCreate    = "c"
 	TypeLinked    = "L"
+	TypeLinkedAbs = "LA"
 	TypeOmit      = "-"
 )
 
@@ -26,26 +27,53 @@ type Map struct {
 	// replaced by subsequent entries.
 	A []Entry
 
+	// current set of masks.
+	mm maskMap
+
 	// lookup existance/index of entries.
 	m map[string]int
 }
 
 func newMap() *Map {
 	return &Map{
-		m: make(map[string]int),
-		A: make([]Entry, 0),
+		m:  make(map[string]int),
+		mm: make(maskMap),
+		A:  make([]Entry, 0),
 	}
 }
 
-func (m *Map) add(e entry) error {
+func (m *Map) add(e entry, rootfs *string) error {
+	switch e.Type() {
+	case
+		maskReplace,
+		maskIgnore,
+		maskIgnoreNeg,
+		maskMode:
+		return m.mm.set(e)
+	case maskClear:
+		return m.mm.del(e)
+	}
+
 	E, err := e.Entry()
 	if err != nil {
 		return err
 	}
 
+	if m.mm.apply(&E) {
+		// ignored by mask
+		return nil
+	}
+
+	// entry rootfs takes priority
+	if r := e.Root(); r != nil {
+		rootfs = r
+	}
+
 	switch E.Type {
-	case TypeLinked:
-		return m.addElf(E, e.Root())
+	case
+		TypeLinkedAbs,
+		TypeLinked:
+		return m.addElf(E, rootfs)
 	case TypeRecursive:
 		return m.addRecursive(
 			E,
@@ -65,6 +93,10 @@ func (m *Map) add(e entry) error {
 }
 
 func (m *Map) Add(e Entry) {
+	if m.mm.apply(&e) {
+		return
+	}
+
 	if i, exists := m.m[e.Dst]; exists {
 		m.A[i] = e
 		return
@@ -80,7 +112,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 		err error
 	)
 	if rootfs != nil {
-		r, err = elf.ResolveWithRoot(e.Src, *rootfs)
+		r, err = elf.ResolveRoot(e.Src, *rootfs, e.Type == TypeLinkedAbs)
 	} else {
 		r, err = elf.Resolve(e.Src)
 	}
@@ -89,7 +121,6 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 		return err
 	}
 
-	// TODO: masks
 	m.Add(Entry{
 		e.Src,
 		e.Dst,
@@ -103,7 +134,18 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 	for _, v := range r {
 		// '/usr/lib/lib.so'
 
-		dst := path.Clean(v)
+		if v == e.Src {
+			continue
+		}
+
+		var err error
+
+		v, err = m.expand(v, rootfs)
+		if err != nil {
+			return err
+		}
+
+		dst := v
 		if rootfs != nil {
 			dst = strings.TrimPrefix(dst, *rootfs)
 		}

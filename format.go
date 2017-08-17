@@ -1,6 +1,6 @@
 package main
 
-// TODO: ignore/user/group/mode/copy/hardlink/rename/prefix mask.
+// TODO: copy/hardlink mask.
 
 const helpFormat = `
 Format:
@@ -34,4 +34,18 @@ Format:
 
   Elf
     // elf is prefixed with rootfs when it is not omitted
-    L *elf dst mode uid gid rootfs`
+    L *elf dst mode uid gid rootfs
+
+Masks:
+  Mode
+    mm *idx *regexp mode uid gid
+
+  Ignore
+    mi *idx *regexp
+    // mI is reversed
+
+  Rename
+    mr *idx *regexp *dst
+
+  Clear
+    mc idx`

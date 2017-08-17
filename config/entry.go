@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"log"
-	"os"
 	"path"
 	"strconv"
 	"strings"
@@ -58,6 +57,7 @@ func (e entry) Src() (string, error) {
 		TypeDirectory,
 		TypeRecursive,
 		TypeCreate,
+		TypeLinkedAbs,
 		TypeLinked:
 		if len(e) < 2 {
 			break
@@ -106,7 +106,9 @@ func (e entry) Dst() (string, error) {
 		// explicitly omitted dst
 		return clean(e[1]), nil
 
-	case TypeLinked:
+	case
+		TypeLinkedAbs,
+		TypeLinked:
 		if len(e) > 2 && e[2] != TypeOmit {
 			return clean(e[2]), nil
 		}
@@ -132,18 +134,10 @@ func (e entry) Dst() (string, error) {
 }
 
 func (e entry) Mode() (int, error) {
-	var (
-		i int    = idxMode
-		t string = e.Type()
-	)
-
-	// src field omitted
-	if t == TypeDirectory || t == TypeCreate {
-		i--
-	}
+	i := e.typeOffset(idxMode)
 
 	if len(e) <= i || e[i] == TypeOmit {
-		switch t {
+		switch e.Type() {
 		case TypeDirectory:
 			return 0755, nil
 		case TypeSymlink:
@@ -156,16 +150,6 @@ func (e entry) Mode() (int, error) {
 	m, err := strconv.ParseInt(e[i], 8, 0)
 	if err != nil {
 		return 0, err
-	}
-
-	if m&modeSticky != 0 {
-		m |= int64(os.ModeSticky)
-	}
-	if m&modeSetgid != 0 {
-		m |= int64(os.ModeSetgid)
-	}
-	if m&modeSetuid != 0 {
-		m |= int64(os.ModeSetuid)
 	}
 
 	return int(m), nil
@@ -202,13 +186,35 @@ func (e entry) parseIndex(i int) (int, error) {
 }
 
 func (e entry) User() (int, error) {
-	r, err := e.parseIndex(idxUser)
-	return int(r), err
+	return e.parseIndex(idxUser)
 }
 
 func (e entry) Group() (int, error) {
-	r, err := e.parseIndex(idxGroup)
-	return int(r), err
+	return e.parseIndex(idxGroup)
+}
+
+func (e entry) pMode() (*int, error) {
+	if !e.isSet(e.typeOffset(idxMode)) {
+		return nil, nil
+	}
+	r, err := e.Mode()
+	return &r, err
+}
+
+func (e entry) pUser() (*int, error) {
+	if !e.isSet(e.typeOffset(idxUser)) {
+		return nil, nil
+	}
+	r, err := e.User()
+	return &r, err
+}
+
+func (e entry) pGroup() (*int, error) {
+	if !e.isSet(e.typeOffset(idxUser)) {
+		return nil, nil
+	}
+	r, err := e.Group()
+	return &r, err
 }
 
 func (e entry) Data() []byte {
@@ -224,9 +230,15 @@ func (e entry) Data() []byte {
 }
 
 func (e entry) Root() *string {
-	if e.Type() != TypeLinked {
+	switch e.Type() {
+	case
+		TypeLinkedAbs,
+		TypeLinked:
+		break
+	default:
 		return nil
 	}
+
 	// idxData = idxRoot
 	if len(e) <= idxData {
 		return nil
@@ -257,9 +269,11 @@ func (e entry) Entry() (Entry, error) {
 		return r, err
 	}
 
-	r.Mode, err = e.Mode()
-	if err != nil {
-		return r, err
+	if e.Type() != TypeRecursive {
+		r.Mode, err = e.Mode()
+		if err != nil {
+			return r, err
+		}
 	}
 
 	r.User, err = e.User()

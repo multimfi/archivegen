@@ -101,7 +101,7 @@ func equal(src, dst *Entry) bool {
 	return bytes.Equal(src.Data, dst.Data)
 }
 
-func TestResolve(t *testing.T) {
+func TestMapResolve(t *testing.T) {
 	log.SetFlags(log.Lshortfile)
 	log.SetOutput(ioutil.Discard)
 
