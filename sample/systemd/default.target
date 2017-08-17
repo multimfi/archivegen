@@ -1,0 +1,4 @@
+[Unit]
+Description=default target
+Wants=bash.service
+After=bash.service
