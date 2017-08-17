@@ -9,6 +9,8 @@ archivegen [OPTIONS...] [FILES...]
     	output file (default "out.archive")
   -print
     	print resolved tree in archivegen format
+  -rootfs string
+    	ELF rootfs
   -stdout
     	output to stdout
   -version
@@ -46,4 +48,18 @@ Format:
   Elf
     // elf is prefixed with rootfs when it is not omitted
     L *elf dst mode uid gid rootfs
+
+Masks:
+  Mode
+    mm *idx *regexp mode uid gid
+
+  Ignore
+    mi *idx *regexp
+    // mI is reversed
+
+  Rename
+    mr *idx *regexp *dst
+
+  Clear
+    mc idx
 ```
