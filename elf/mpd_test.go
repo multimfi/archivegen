@@ -56,44 +56,44 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libexpat.so.1": {[]string{
+	"/lib64/libexpat.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libc.so.6": {[]string{
+	"/lib64/libc.so.6": {[]string{
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/ld-linux-x86-64.so.2": {[]string(nil),
+	"/lib64/ld-linux-x86-64.so.2": {[]string(nil),
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libupnp.so.6": {[]string{
+	"/lib64/libupnp.so.6": {[]string{
 		"libthreadutil.so.6",
 		"libixml.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libthreadutil.so.6": {[]string{
+	"/lib64/libthreadutil.so.6": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libpthread.so.0": {[]string{
+	"/lib64/libpthread.so.0": {[]string{
 		"libc.so.6",
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libixml.so.2": {[]string{
+	"/lib64/libixml.so.2": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libmpdclient.so.2": {[]string{
+	"/lib64/libmpdclient.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcurl.so.4": {[]string{
+	"/lib64/libcurl.so.4": {[]string{
 		"libnghttp2.so.14",
 		"libssh2.so.1",
 		"libpsl.so.5",
@@ -108,44 +108,44 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libnghttp2.so.14": {[]string{
+	"/lib64/libnghttp2.so.14": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libssh2.so.1": {[]string{
+	"/lib64/libssh2.so.1": {[]string{
 		"libssl.so.1.1",
 		"libcrypto.so.1.1",
 		"libz.so.1",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libssl.so.1.1": {[]string{
+	"/lib64/libssl.so.1.1": {[]string{
 		"libcrypto.so.1.1",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcrypto.so.1.1": {[]string{
+	"/lib64/libcrypto.so.1.1": {[]string{
 		"libdl.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libdl.so.2": {[]string{
+	"/lib64/libdl.so.2": {[]string{
 		"libc.so.6",
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libz.so.1": {[]string{
+	"/lib64/libz.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libpsl.so.5": {[]string{
+	"/lib64/libpsl.so.5": {[]string{
 		"libicuuc.so.59",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libicuuc.so.59": {[]string{
+	"/lib64/libicuuc.so.59": {[]string{
 		"libicudata.so.59",
 		"libpthread.so.0",
 		"libdl.so.2",
@@ -155,26 +155,26 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libicudata.so.59": {[]string(nil),
+	"/lib64/libicudata.so.59": {[]string(nil),
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libstdc++.so.6": {[]string{
+	"/lib64/libstdc++.so.6": {[]string{
 		"libm.so.6",
 		"libc.so.6",
 		"ld-linux-x86-64.so.2",
 		"libgcc_s.so.1"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libm.so.6": {[]string{
+	"/lib64/libm.so.6": {[]string{
 		"libc.so.6",
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgcc_s.so.1": {[]string{
+	"/lib64/libgcc_s.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgssapi_krb5.so.2": {[]string{
+	"/lib64/libgssapi_krb5.so.2": {[]string{
 		"libkrb5.so.3",
 		"libk5crypto.so.3",
 		"libcom_err.so.2",
@@ -185,7 +185,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libkrb5.so.3": {[]string{
+	"/lib64/libkrb5.so.3": {[]string{
 		"libk5crypto.so.3",
 		"libcom_err.so.2",
 		"libkrb5support.so.0",
@@ -194,39 +194,39 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libk5crypto.so.3": {[]string{
+	"/lib64/libk5crypto.so.3": {[]string{
 		"libkrb5support.so.0",
 		"libkeyutils.so.1",
 		"libresolv.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libkrb5support.so.0": {[]string{
+	"/lib64/libkrb5support.so.0": {[]string{
 		"libkeyutils.so.1",
 		"libresolv.so.2",
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libkeyutils.so.1": {[]string{
+	"/lib64/libkeyutils.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libresolv.so.2": {[]string{
+	"/lib64/libresolv.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcom_err.so.2": {[]string{
+	"/lib64/libcom_err.so.2": {[]string{
 		"libpthread.so.0",
 		"libc.so.6",
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libnfs.so.11": {[]string{
+	"/lib64/libnfs.so.11": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsmbclient.so.0": {[]string{
+	"/lib64/libsmbclient.so.0": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libmsrpc3-samba4.so",
@@ -250,8 +250,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libsamba-util.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libsamba-util.so.0": {[]string{
 		"libpthread.so.0",
 		"libtime-basic-samba4.so",
 		"libsamba-debug-samba4.so",
@@ -265,12 +265,12 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libtime-basic-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libtime-basic-samba4.so": {[]string{
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libsamba-debug-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libsamba-debug-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libtime-basic-samba4.so",
 		"libsocket-blocking-samba4.so",
@@ -279,13 +279,13 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libsocket-blocking-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libsocket-blocking-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsystemd.so.0": {[]string{
+	"/lib64/libsystemd.so.0": {[]string{
 		"libpthread.so.0",
 		"libc.so.6",
 		"libgcrypt.so.20",
@@ -295,66 +295,66 @@ var mpdfiles = map[string]ef{
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgcrypt.so.20": {[]string{
+	"/lib64/libgcrypt.so.20": {[]string{
 		"libgpg-error.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgpg-error.so.0": {[]string{
+	"/lib64/libgpg-error.so.0": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/librt.so.1": {[]string{
+	"/lib64/librt.so.1": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/liblzma.so.5": {[]string{
+	"/lib64/liblzma.so.5": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/liblz4.so.1": {[]string{
+	"/lib64/liblz4.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtalloc.so.2": {[]string{
+	"/lib64/libtalloc.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libbsd.so.0": {[]string{
+	"/lib64/libbsd.so.0": {[]string{
 		"librt.so.1",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libgenrand-samba4.so": {[]string{
+	"/lib64/samba/libgenrand-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsys-rw-samba4.so",
 		"libsocket-blocking-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libsys-rw-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libsys-rw-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libiov-buf-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libiov-buf-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libiov-buf-samba4.so": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libreplace-samba4.so": {[]string{
+	"/lib64/samba/libreplace-samba4.so": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtevent.so.0": {[]string{
+	"/lib64/libtevent.so.0": {[]string{
 		"libtalloc.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libmsrpc3-samba4.so": {[]string{
+	"/lib64/samba/libmsrpc3-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libtevent-util.so.0",
@@ -384,21 +384,21 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libtevent-util.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libtevent-util.so.0": {[]string{
 		"libpthread.so.0",
 		"libsamba-errors.so.1",
 		"libtalloc.so.2",
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libsamba-errors.so.1": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libsamba-errors.so.1": {[]string{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/liblibsmb-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/liblibsmb-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libasn1util-samba4.so",
@@ -427,15 +427,15 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libasn1util-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libasn1util-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsamba-debug-samba4.so",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libcli-cldap-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libcli-cldap-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libtevent-util.so.0",
@@ -452,8 +452,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsamba-sockets-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsamba-sockets-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libiov-buf-samba4.so",
@@ -467,24 +467,24 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libinterfaces-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libinterfaces-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-debug-samba4.so",
 		"libbsd.so.0",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/libndr-nbt.so.0": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/libndr-nbt.so.0": {[]string{
 		"libndr.so.0",
 		"libsamba-security-samba4.so",
 		"libsamba-util.so.0",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libndr.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libndr.so.0": {[]string{
 		"libsamba-util.so.0",
 		"libsamba-errors.so.1",
 		"libsamba-debug-samba4.so",
@@ -492,8 +492,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsamba-security-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsamba-security-samba4.so": {[]string{
 		"libndr.so.0",
 		"libsamba-util.so.0",
 		"libsamba-debug-samba4.so",
@@ -501,8 +501,8 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libcli-ldap-common-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libcli-ldap-common-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsamba-errors.so.1",
 		"libasn1util-samba4.so",
@@ -513,16 +513,16 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libldb.so.1": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libldb.so.1": {[]string{
 		"libpthread.so.0",
 		"libdl.so.2",
 		"libtevent.so.0",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/samba/libcliauth-samba4.so": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/samba/libcliauth-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libutil-tdb-samba4.so",
 		"libasn1util-samba4.so",
@@ -540,19 +540,19 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libutil-tdb-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libutil-tdb-samba4.so": {[]string{
 		"libtdb.so.1",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libtdb.so.1": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libtdb.so.1": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libndr-samba-samba4.so": {[]string{
+	"/lib64/samba/libndr-samba-samba4.so": {[]string{
 		"libndr-standard.so.0",
 		"libasn1util-samba4.so",
 		"libndr-nbt.so.0",
@@ -564,16 +564,16 @@ var mpdfiles = map[string]ef{
 		"libz.so.1",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libndr-standard.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libndr-standard.so.0": {[]string{
 		"libsamba-security-samba4.so",
 		"libndr.so.0",
 		"libsamba-util.so.0",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libsamba-hostconfig.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libsamba-hostconfig.so.0": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libserver-role-samba4.so",
@@ -581,13 +581,13 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libserver-role-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libserver-role-samba4.so": {[]string{
 		"libsamba-debug-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/samba/libdbwrap-samba4.so": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/samba/libdbwrap-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libtdb-wrap-samba4.so",
@@ -599,23 +599,23 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libtdb-wrap-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libtdb-wrap-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-debug-samba4.so",
 		"libtdb.so.1",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libCHARSET3-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libCHARSET3-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsamba3-util-samba4.so",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsamba3-util-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsamba3-util-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libreplace-samba4.so",
@@ -624,13 +624,13 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libutil-setid-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libutil-setid-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libcli-smb-common-samba4.so": {[]string{
+	"/lib64/samba/libcli-smb-common-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libiov-buf-samba4.so",
@@ -647,8 +647,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsmb-transport-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsmb-transport-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libiov-buf-samba4.so",
 		"libtevent-util.so.0",
@@ -657,8 +657,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libgensec-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libgensec-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libwbclient.so.0",
@@ -686,25 +686,25 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libwbclient.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libwbclient.so.0": {[]string{
 		"libwinbind-client-samba4.so",
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libwinbind-client-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libwinbind-client-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libreplace-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libcom_err-samba4.so.0": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libcom_err-samba4.so.0": {[]string{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libsamba-modules-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libsamba-modules-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsamba-errors.so.1",
 		"libsamba-debug-samba4.so",
@@ -712,8 +712,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/samba/libgssapi-samba4.so.2": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/samba/libgssapi-samba4.so.2": {[]string{
 		"libpthread.so.0",
 		"libkrb5-samba4.so.26",
 		"libroken-samba4.so.19",
@@ -722,8 +722,8 @@ var mpdfiles = map[string]ef{
 		"libheimbase-samba4.so.1",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libkrb5-samba4.so.26": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libkrb5-samba4.so.26": {[]string{
 		"libpthread.so.0",
 		"libheimbase-samba4.so.1",
 		"libcom_err-samba4.so.0",
@@ -736,25 +736,25 @@ var mpdfiles = map[string]ef{
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libheimbase-samba4.so.1": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libheimbase-samba4.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libasn1-samba4.so.8": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libasn1-samba4.so.8": {[]string{
 		"libroken-samba4.so.19",
 		"libcom_err-samba4.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libroken-samba4.so.19": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libroken-samba4.so.19": {[]string{
 		"libpthread.so.0",
 		"libresolv.so.2",
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libhx509-samba4.so.5": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libhx509-samba4.so.5": {[]string{
 		"libpthread.so.0",
 		"libroken-samba4.so.19",
 		"libasn1-samba4.so.8",
@@ -764,8 +764,8 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libhcrypto-samba4.so.5": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libhcrypto-samba4.so.5": {[]string{
 		"libpthread.so.0",
 		"libroken-samba4.so.19",
 		"libasn1-samba4.so.8",
@@ -773,13 +773,13 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libwind-samba4.so.0": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libwind-samba4.so.0": {[]string{
 		"libcom_err-samba4.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libauthkrb5-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libauthkrb5-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libndr.so.0",
 		"libgssapi-samba4.so.2",
@@ -799,16 +799,16 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libauth-sam-reply-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libauth-sam-reply-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsamba-security-samba4.so",
 		"libsamba-debug-samba4.so",
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libkrb5samba-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libkrb5samba-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libkrb5-samba4.so.26",
 		"libsamba-util.so.0",
@@ -819,8 +819,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libndr-krb5pac.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libndr-krb5pac.so.0": {[]string{
 		"libndr.so.0",
 		"libndr-standard.so.0",
 		"libsamba-security-samba4.so",
@@ -828,8 +828,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libgnutls.so.30": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libgnutls.so.30": {[]string{
 		"libz.so.1",
 		"libp11-kit.so.0",
 		"libunistring.so.2",
@@ -840,40 +840,40 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libp11-kit.so.0": {[]string{
+	"/lib64/libp11-kit.so.0": {[]string{
 		"libffi.so.6",
 		"libdl.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libffi.so.6": {[]string{
+	"/lib64/libffi.so.6": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libunistring.so.2": {[]string{
+	"/lib64/libunistring.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtasn1.so.6": {[]string{
+	"/lib64/libtasn1.so.6": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libnettle.so.6": {[]string{
+	"/lib64/libnettle.so.6": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libhogweed.so.4": {[]string{
+	"/lib64/libhogweed.so.4": {[]string{
 		"libnettle.so.6",
 		"libgmp.so.10",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgmp.so.10": {[]string{
+	"/lib64/libgmp.so.10": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsamdb.so.0": {[]string{
+	"/lib64/libsamdb.so.0": {[]string{
 		"libkrb5-samba4.so.26",
 		"libsamba-util.so.0",
 		"libsamdb-common-samba4.so",
@@ -895,8 +895,8 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsamdb-common-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsamdb-common-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libflag-mapping-samba4.so",
 		"libcli-ldap-common-samba4.so",
@@ -915,13 +915,13 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libflag-mapping-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libflag-mapping-samba4.so": {[]string{
 		"libsamba-debug-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libldbsamba-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libldbsamba-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libsamdb-common-samba4.so",
@@ -938,8 +938,8 @@ var mpdfiles = map[string]ef{
 		"libtdb.so.1",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libsamba-credentials.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libsamba-credentials.so.0": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libsamdb-common-samba4.so",
@@ -963,8 +963,8 @@ var mpdfiles = map[string]ef{
 		"libbsd.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libgse-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libgse-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libkrb5-samba4.so.26",
 		"libaddns-samba4.so",
@@ -992,8 +992,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libaddns-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libaddns-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libndr.so.0",
@@ -1005,8 +1005,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libsmbconf.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libsmbconf.so.0": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libinterfaces-samba4.so",
@@ -1048,13 +1048,13 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libtalloc-report-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libtalloc-report-samba4.so": {[]string{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libmessages-dgm-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libmessages-dgm-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-debug-samba4.so",
 		"libgenrand-samba4.so",
@@ -1068,18 +1068,18 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libmsghdr-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libmsghdr-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libiov-buf-samba4.so",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libsmbd-shim-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libsmbd-shim-samba4.so": {[]string{
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba"}},
-	"/usr/lib/samba/libserver-id-db-samba4.so": {[]string{
+		[]string{"/lib64/samba"}},
+	"/lib64/samba/libserver-id-db-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libtdb-wrap-samba4.so",
 		"libutil-tdb-samba4.so",
@@ -1087,37 +1087,37 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libsamba-cluster-support-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libsamba-cluster-support-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libutil-reg-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libutil-reg-samba4.so": {[]string{
 		"libndr.so.0",
 		"libsamba-util.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/samba/libmessages-util-samba4.so": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/samba/libmessages-util-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib"}},
-	"/usr/lib/libnsl.so.1": {[]string{
+		[]string{"/lib64"}},
+	"/lib64/libnsl.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcap.so.2": {[]string{
+	"/lib64/libcap.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/liblber-2.4.so.2": {[]string{
+	"/lib64/liblber-2.4.so.2": {[]string{
 		"libresolv.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libldap-2.4.so.2": {[]string{
+	"/lib64/libldap-2.4.so.2": {[]string{
 		"liblber-2.4.so.2",
 		"libresolv.so.2",
 		"libsasl2.so.3",
@@ -1125,13 +1125,13 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsasl2.so.3": {[]string{
+	"/lib64/libsasl2.so.3": {[]string{
 		"libdl.so.2",
 		"libresolv.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/samba/libsecrets3-samba4.so": {[]string{
+	"/lib64/samba/libsecrets3-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libsmbconf.so.0",
 		"libutil-tdb-samba4.so",
@@ -1145,8 +1145,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libcli-nbt-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libcli-nbt-samba4.so": {[]string{
 		"libpthread.so.0",
 		"libsamba-util.so.0",
 		"libtevent-util.so.0",
@@ -1159,8 +1159,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libutil-cmdline-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libutil-cmdline-samba4.so": {[]string{
 		"libsecrets3-samba4.so",
 		"libsamba-util.so.0",
 		"libsmbconf.so.0",
@@ -1170,8 +1170,8 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libdcerpc-binding.so.0": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libdcerpc-binding.so.0": {[]string{
 		"libpthread.so.0",
 		"libtevent-util.so.0",
 		"libsamba-sockets-samba4.so",
@@ -1184,8 +1184,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/libdcerpc-samba-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/libdcerpc-samba-samba4.so": {[]string{
 		"libdcerpc-binding.so.0",
 		"libndr-samba-samba4.so",
 		"libndr-standard.so.0",
@@ -1195,8 +1195,8 @@ var mpdfiles = map[string]ef{
 		"libtevent.so.0",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/samba/liblibcli-lsa3-samba4.so": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/samba/liblibcli-lsa3-samba4.so": {[]string{
 		"libsamba-util.so.0",
 		"libdcerpc-samba-samba4.so",
 		"libsamba-debug-samba4.so",
@@ -1205,27 +1205,27 @@ var mpdfiles = map[string]ef{
 		"libtalloc.so.2",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/samba:/usr/lib"}},
-	"/usr/lib/libFLAC.so.8": {[]string{
+		[]string{"/lib64/samba:/lib64"}},
+	"/lib64/libFLAC.so.8": {[]string{
 		"libogg.so.0",
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libogg.so.0": {[]string{
+	"/lib64/libogg.so.0": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libyajl.so.2": {[]string{
+	"/lib64/libyajl.so.2": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libavahi-common.so.3": {[]string{
+	"/lib64/libavahi-common.so.3": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libavahi-client.so.3": {[]string{
+	"/lib64/libavahi-client.so.3": {[]string{
 		"libdbus-1.so.3",
 		"libavahi-common.so.3",
 		"libdl.so.2",
@@ -1233,26 +1233,26 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libdbus-1.so.3": {[]string{
+	"/lib64/libdbus-1.so.3": {[]string{
 		"libpthread.so.0",
 		"libsystemd.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsqlite3.so.0": {[]string{
+	"/lib64/libsqlite3.so.0": {[]string{
 		"libm.so.6",
 		"libdl.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libvorbis.so.0": {[]string{
+	"/lib64/libvorbis.so.0": {[]string{
 		"libm.so.6",
 		"libogg.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsndfile.so.1": {[]string{
+	"/lib64/libsndfile.so.1": {[]string{
 		"libFLAC.so.8",
 		"libogg.so.0",
 		"libvorbis.so.0",
@@ -1261,14 +1261,14 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libvorbisenc.so.2": {[]string{
+	"/lib64/libvorbisenc.so.2": {[]string{
 		"libvorbis.so.0",
 		"libm.so.6",
 		"libogg.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libaudiofile.so.1": {[]string{
+	"/lib64/libaudiofile.so.1": {[]string{
 		"libFLAC.so.8",
 		"libstdc++.so.6",
 		"libm.so.6",
@@ -1276,28 +1276,28 @@ var mpdfiles = map[string]ef{
 		"libgcc_s.so.1"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgme.so.0": {[]string{
+	"/lib64/libgme.so.0": {[]string{
 		"libstdc++.so.6",
 		"libm.so.6",
 		"libgcc_s.so.1",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libwavpack.so.1": {[]string{
+	"/lib64/libwavpack.so.1": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libmad.so.0": {[]string{
+	"/lib64/libmad.so.0": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libopus.so.0": {[]string{
+	"/lib64/libopus.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libavformat.so.57": {[]string{
+	"/lib64/libavformat.so.57": {[]string{
 		"libavcodec.so.57",
 		"libavutil.so.55",
 		"libdl.so.2",
@@ -1313,7 +1313,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libavcodec.so.57": {[]string{
+	"/lib64/libavcodec.so.57": {[]string{
 		"libswresample.so.2",
 		"libavutil.so.55",
 		"libdl.so.2",
@@ -1343,7 +1343,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libswresample.so.2": {[]string{
+	"/lib64/libswresample.so.2": {[]string{
 		"libavutil.so.55",
 		"libm.so.6",
 		"libsoxr.so.0",
@@ -1351,7 +1351,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libavutil.so.55": {[]string{
+	"/lib64/libavutil.so.55": {[]string{
 		"libdl.so.2",
 		"libvdpau.so.1",
 		"libva.so.1",
@@ -1363,44 +1363,44 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libvdpau.so.1": {[]string{
+	"/lib64/libvdpau.so.1": {[]string{
 		"libdl.so.2",
 		"libXext.so.6",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libXext.so.6": {[]string{
+	"/lib64/libXext.so.6": {[]string{
 		"libX11.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libX11.so.6": {[]string{
+	"/lib64/libX11.so.6": {[]string{
 		"libxcb.so.1",
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libxcb.so.1": {[]string{
+	"/lib64/libxcb.so.1": {[]string{
 		"libXau.so.6",
 		"libXdmcp.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libXau.so.6": {[]string{
+	"/lib64/libXau.so.6": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libXdmcp.so.6": {[]string{
+	"/lib64/libXdmcp.so.6": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libva.so.1": {[]string{
+	"/lib64/libva.so.1": {[]string{
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libva-x11.so.1": {[]string{
+	"/lib64/libva-x11.so.1": {[]string{
 		"libva.so.1",
 		"libX11.so.6",
 		"libXext.so.6",
@@ -1410,43 +1410,43 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libXfixes.so.3": {[]string{
+	"/lib64/libXfixes.so.3": {[]string{
 		"libX11.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libdrm.so.2": {[]string{
+	"/lib64/libdrm.so.2": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libva-drm.so.1": {[]string{
+	"/lib64/libva-drm.so.1": {[]string{
 		"libva.so.1",
 		"libdrm.so.2",
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsoxr.so.0": {[]string{
+	"/lib64/libsoxr.so.0": {[]string{
 		"libm.so.6",
 		"libgomp.so.1",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgomp.so.1": {[]string{
+	"/lib64/libgomp.so.1": {[]string{
 		"libdl.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libxvidcore.so.4": {[]string{
+	"/lib64/libxvidcore.so.4": {[]string{
 		"libc.so.6",
 		"libm.so.6",
 		"libpthread.so.0"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libx265.so.116": {[]string{
+	"/lib64/libx265.so.116": {[]string{
 		"libpthread.so.0",
 		"libdl.so.2",
 		"libstdc++.so.6",
@@ -1454,47 +1454,47 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libx264.so.148": {[]string{
+	"/lib64/libx264.so.148": {[]string{
 		"libc.so.6",
 		"libm.so.6",
 		"libpthread.so.0",
 		"libdl.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libwebpmux.so.3": {[]string{
+	"/lib64/libwebpmux.so.3": {[]string{
 		"libwebp.so.7",
 		"libm.so.6",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libwebp.so.7": {[]string{
+	"/lib64/libwebp.so.7": {[]string{
 		"libm.so.6",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libvpx.so.4": {[]string{
+	"/lib64/libvpx.so.4": {[]string{
 		"libpthread.so.0",
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtheoraenc.so.1": {[]string{
+	"/lib64/libtheoraenc.so.1": {[]string{
 		"libogg.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtheoradec.so.1": {[]string{
+	"/lib64/libtheoradec.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libspeex.so.1": {[]string{
+	"/lib64/libspeex.so.1": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libschroedinger-1.0.so.0": {[]string{
+	"/lib64/libschroedinger-1.0.so.0": {[]string{
 		"liborc-0.4.so.0",
 		"libpthread.so.0",
 		"libstdc++.so.6",
@@ -1503,36 +1503,36 @@ var mpdfiles = map[string]ef{
 		"libgcc_s.so.1"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/liborc-0.4.so.0": {[]string{
+	"/lib64/liborc-0.4.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libopenjp2.so.7": {[]string{
+	"/lib64/libopenjp2.so.7": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libopencore-amrwb.so.0": {[]string{
+	"/lib64/libopencore-amrwb.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libopencore-amrnb.so.0": {[]string{
+	"/lib64/libopencore-amrnb.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libmp3lame.so.0": {[]string{
+	"/lib64/libmp3lame.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgsm.so.1": {[]string{
+	"/lib64/libgsm.so.1": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libssh.so.4": {[]string{
+	"/lib64/libssh.so.4": {[]string{
 		"librt.so.1",
 		"libgcrypt.so.20",
 		"libz.so.1",
@@ -1540,14 +1540,14 @@ var mpdfiles = map[string]ef{
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libmodplug.so.1": {[]string{
+	"/lib64/libmodplug.so.1": {[]string{
 		"libstdc++.so.6",
 		"libm.so.6",
 		"libc.so.6",
 		"libgcc_s.so.1"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libbluray.so.2": {[]string{
+	"/lib64/libbluray.so.2": {[]string{
 		"libxml2.so.2",
 		"libfontconfig.so.1",
 		"libfreetype.so.6",
@@ -1556,7 +1556,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libxml2.so.2": {[]string{
+	"/lib64/libxml2.so.2": {[]string{
 		"libdl.so.2",
 		"libicuuc.so.59",
 		"libz.so.1",
@@ -1565,14 +1565,14 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libfontconfig.so.1": {[]string{
+	"/lib64/libfontconfig.so.1": {[]string{
 		"libfreetype.so.6",
 		"libexpat.so.1",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libfreetype.so.6": {[]string{
+	"/lib64/libfreetype.so.6": {[]string{
 		"libz.so.1",
 		"libbz2.so.1.0",
 		"libpng16.so.16",
@@ -1580,44 +1580,44 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libbz2.so.1.0": {[]string{
+	"/lib64/libbz2.so.1.0": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libpng16.so.16": {[]string{
+	"/lib64/libpng16.so.16": {[]string{
 		"libz.so.1",
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libharfbuzz.so.0": {[]string{
+	"/lib64/libharfbuzz.so.0": {[]string{
 		"libglib-2.0.so.0",
 		"libfreetype.so.6",
 		"libgraphite2.so.3",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libglib-2.0.so.0": {[]string{
+	"/lib64/libglib-2.0.so.0": {[]string{
 		"libpcre.so.1",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libpcre.so.1": {[]string{
+	"/lib64/libpcre.so.1": {[]string{
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libgraphite2.so.3": {[]string{
+	"/lib64/libgraphite2.so.3": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libfaad.so.2": {[]string{
+	"/lib64/libfaad.so.2": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcdio_paranoia.so.2": {[]string{
+	"/lib64/libcdio_paranoia.so.2": {[]string{
 		"libcdio_cdda.so.2",
 		"libcdio.so.16",
 		"librt.so.1",
@@ -1625,22 +1625,22 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcdio_cdda.so.2": {[]string{
+	"/lib64/libcdio_cdda.so.2": {[]string{
 		"libcdio.so.16",
 		"librt.so.1",
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libcdio.so.16": {[]string{
+	"/lib64/libcdio.so.16": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libmms.so.0": {[]string{
+	"/lib64/libmms.so.0": {[]string{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libasound.so.2": {[]string{
+	"/lib64/libasound.so.2": {[]string{
 		"libm.so.6",
 		"libdl.so.2",
 		"libpthread.so.0",
@@ -1649,23 +1649,23 @@ var mpdfiles = map[string]ef{
 		"ld-linux-x86-64.so.2"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libiso9660.so.10": {[]string{
+	"/lib64/libiso9660.so.10": {[]string{
 		"libcdio.so.16",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libzzip-0.so.13": {[]string{
+	"/lib64/libzzip-0.so.13": {[]string{
 		"libz.so.1",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libao.so.4": {[]string{
+	"/lib64/libao.so.4": {[]string{
 		"libpthread.so.0",
 		"libdl.so.2",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libjack.so.0": {[]string{
+	"/lib64/libjack.so.0": {[]string{
 		"libpthread.so.0",
 		"librt.so.1",
 		"libdl.so.2",
@@ -1675,7 +1675,7 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libshout.so.3": {[]string{
+	"/lib64/libshout.so.3": {[]string{
 		"libvorbis.so.0",
 		"libssl.so.1.1",
 		"libcrypto.so.1.1",
@@ -1686,12 +1686,12 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libtheora.so.0": {[]string{
+	"/lib64/libtheora.so.0": {[]string{
 		"libogg.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libpulse.so.0": {[]string{
+	"/lib64/libpulse.so.0": {[]string{
 		"libpulsecommon-10.0.so",
 		"libdbus-1.so.3",
 		"libpthread.so.0",
@@ -1699,8 +1699,8 @@ var mpdfiles = map[string]ef{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
-		[]string{"/usr/lib/pulseaudio"}},
-	"/usr/lib/pulseaudio/libpulsecommon-10.0.so": {[]string{
+		[]string{"/lib64/pulseaudio"}},
+	"/lib64/pulseaudio/libpulsecommon-10.0.so": {[]string{
 		"libxcb.so.1",
 		"libsystemd.so.0",
 		"libsndfile.so.1",
@@ -1713,23 +1713,23 @@ var mpdfiles = map[string]ef{
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libasyncns.so.0": {[]string{
+	"/lib64/libasyncns.so.0": {[]string{
 		"libresolv.so.2",
 		"libpthread.so.0",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libid3tag.so.0": {[]string{
+	"/lib64/libid3tag.so.0": {[]string{
 		"libz.so.1",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libsamplerate.so.0": {[]string{
+	"/lib64/libsamplerate.so.0": {[]string{
 		"libm.so.6",
 		"libc.so.6"},
 		[]string(nil),
 		[]string(nil)},
-	"/usr/lib/libicui18n.so.59": {[]string{
+	"/lib64/libicui18n.so.59": {[]string{
 		"libicuuc.so.59",
 		"libstdc++.so.6",
 		"libm.so.6",
@@ -1740,209 +1740,209 @@ var mpdfiles = map[string]ef{
 }
 
 var mpdresolved = []string{
-	"/usr/lib/samba/libkrb5samba-samba4.so",
-	"/usr/lib/libxcb.so.1",
-	"/usr/lib/libmms.so.0",
-	"/usr/lib/libsamplerate.so.0",
-	"/usr/lib/libupnp.so.6",
-	"/usr/lib/libssl.so.1.1",
-	"/usr/lib/samba/libcli-cldap-samba4.so",
-	"/usr/lib/samba/libcliauth-samba4.so",
-	"/usr/lib/samba/libsamba-modules-samba4.so",
-	"/usr/lib/samba/libkrb5-samba4.so.26",
-	"/usr/lib/samba/libasn1-samba4.so.8",
-	"/usr/lib/samba/libhx509-samba4.so.5",
-	"/usr/lib/libtalloc.so.2",
-	"/usr/lib/samba/libasn1util-samba4.so",
-	"/usr/lib/libopencore-amrwb.so.0",
-	"/usr/lib/libharfbuzz.so.0",
-	"/usr/lib/libnsl.so.1",
-	"/usr/lib/libspeex.so.1",
-	"/usr/lib/libschroedinger-1.0.so.0",
-	"/usr/lib/libmp3lame.so.0",
-	"/usr/lib/samba/libauthkrb5-samba4.so",
-	"/usr/lib/libwebp.so.7",
-	"/usr/lib/samba/libsamba-security-samba4.so",
-	"/usr/lib/libndr-standard.so.0",
-	"/usr/lib/samba/libmessages-util-samba4.so",
-	"/usr/lib/libFLAC.so.8",
-	"/usr/lib/libavahi-common.so.3",
-	"/usr/lib/libdbus-1.so.3",
-	"/usr/lib/libixml.so.2",
-	"/usr/lib/libresolv.so.2",
-	"/usr/lib/libopencore-amrnb.so.0",
-	"/usr/lib/samba/libinterfaces-samba4.so",
-	"/usr/lib/samba/libcli-ldap-common-samba4.so",
-	"/usr/lib/samba/libgssapi-samba4.so.2",
-	"/usr/lib/libhogweed.so.4",
-	"/usr/lib/libsndfile.so.1",
-	"/usr/lib/libXext.so.6",
-	"/usr/lib/libgcc_s.so.1",
-	"/usr/lib/libcom_err.so.2",
-	"/usr/lib/libsamba-hostconfig.so.0",
-	"/usr/lib/samba/libgensec-samba4.so",
-	"/usr/lib/libsamdb.so.0",
-	"/usr/lib/libXfixes.so.3",
-	"/usr/lib/libgssapi_krb5.so.2",
-	"/usr/lib/libsmbclient.so.0",
-	"/usr/lib/libopus.so.0",
-	"/usr/lib/libx264.so.148",
-	"/usr/lib/libvpx.so.4",
-	"/usr/lib/libpng16.so.16",
-	"/usr/lib/libyajl.so.2",
-	"/usr/lib/libsqlite3.so.0",
-	"/usr/lib/libgpg-error.so.0",
-	"/usr/lib/libndr.so.0",
-	"/usr/lib/libunistring.so.2",
-	"/usr/lib/libcap.so.2",
-	"/usr/lib/libasyncns.so.0",
-	"/usr/lib/libpthread.so.0",
-	"/usr/lib/libsamba-util.so.0",
-	"/usr/lib/librt.so.1",
-	"/usr/lib/libndr-krb5pac.so.0",
-	"/usr/lib/libwavpack.so.1",
-	"/usr/lib/libfontconfig.so.1",
-	"/usr/lib/libdl.so.2",
-	"/usr/lib/libkrb5.so.3",
-	"/usr/lib/samba/libCHARSET3-samba4.so",
-	"/usr/lib/samba/libtalloc-report-samba4.so",
-	"/usr/lib/samba/libmessages-dgm-samba4.so",
-	"/usr/lib/libXdmcp.so.6",
-	"/usr/lib/libasound.so.2",
-	"/usr/lib/libpulse.so.0",
-	"/usr/lib/libicudata.so.59",
-	"/usr/lib/samba/libiov-buf-samba4.so",
-	"/usr/lib/libgcrypt.so.20",
-	"/usr/lib/libgnutls.so.30",
-	"/usr/lib/libgmp.so.10",
-	"/usr/lib/libswresample.so.2",
-	"/usr/lib/libavutil.so.55",
-	"/usr/lib/libicuuc.so.59",
-	"/usr/lib/libm.so.6",
-	"/usr/lib/samba/libutil-cmdline-samba4.so",
-	"/usr/lib/libmad.so.0",
-	"/usr/lib/libiso9660.so.10",
-	"/usr/lib/libao.so.4",
-	"/usr/lib/libcurl.so.4",
-	"/usr/lib/libcrypto.so.1.1",
-	"/usr/lib/libtdb.so.1",
-	"/usr/lib/samba/libcom_err-samba4.so.0",
-	"/usr/lib/samba/libwind-samba4.so.0",
-	"/usr/lib/samba/libutil-reg-samba4.so",
-	"/usr/lib/samba/liblibcli-lsa3-samba4.so",
-	"/usr/lib/libbluray.so.2",
-	"/usr/lib/libssh2.so.1",
-	"/usr/lib/libsystemd.so.0",
-	"/usr/lib/libfaad.so.2",
-	"/usr/lib/libjack.so.0",
-	"/usr/lib/libwebpmux.so.3",
-	"/usr/lib/samba/libsamdb-common-samba4.so",
-	"/usr/lib/samba/libldbsamba-samba4.so",
-	"/usr/lib/libavahi-client.so.3",
-	"/usr/lib/libva.so.1",
-	"/usr/lib/libxvidcore.so.4",
-	"/usr/lib/libldap-2.4.so.2",
-	"/usr/lib/libsasl2.so.3",
-	"/usr/lib/samba/libsamba3-util-samba4.so",
-	"/usr/lib/libwbclient.so.0",
-	"/usr/lib/samba/libauth-sam-reply-samba4.so",
-	"/usr/lib/samba/libdcerpc-samba-samba4.so",
-	"/usr/lib/libogg.so.0",
-	"/usr/lib/libdrm.so.2",
-	"/usr/lib/samba/libtime-basic-samba4.so",
-	"/usr/lib/samba/libdbwrap-samba4.so",
-	"/usr/lib/libsoxr.so.0",
-	"/usr/lib/samba/libsamba-debug-samba4.so",
-	"/usr/lib/libnettle.so.6",
-	"/usr/lib/libx265.so.116",
-	"/usr/lib/libopenjp2.so.7",
-	"/usr/lib/libcdio_paranoia.so.2",
+	"/lib64/samba/libkrb5samba-samba4.so",
+	"/lib64/libxcb.so.1",
+	"/lib64/libmms.so.0",
+	"/lib64/libsamplerate.so.0",
+	"/lib64/libupnp.so.6",
+	"/lib64/libssl.so.1.1",
+	"/lib64/samba/libcli-cldap-samba4.so",
+	"/lib64/samba/libcliauth-samba4.so",
+	"/lib64/samba/libsamba-modules-samba4.so",
+	"/lib64/samba/libkrb5-samba4.so.26",
+	"/lib64/samba/libasn1-samba4.so.8",
+	"/lib64/samba/libhx509-samba4.so.5",
+	"/lib64/libtalloc.so.2",
+	"/lib64/samba/libasn1util-samba4.so",
+	"/lib64/libopencore-amrwb.so.0",
+	"/lib64/libharfbuzz.so.0",
+	"/lib64/libnsl.so.1",
+	"/lib64/libspeex.so.1",
+	"/lib64/libschroedinger-1.0.so.0",
+	"/lib64/libmp3lame.so.0",
+	"/lib64/samba/libauthkrb5-samba4.so",
+	"/lib64/libwebp.so.7",
+	"/lib64/samba/libsamba-security-samba4.so",
+	"/lib64/libndr-standard.so.0",
+	"/lib64/samba/libmessages-util-samba4.so",
+	"/lib64/libFLAC.so.8",
+	"/lib64/libavahi-common.so.3",
+	"/lib64/libdbus-1.so.3",
+	"/lib64/libixml.so.2",
+	"/lib64/libresolv.so.2",
+	"/lib64/libopencore-amrnb.so.0",
+	"/lib64/samba/libinterfaces-samba4.so",
+	"/lib64/samba/libcli-ldap-common-samba4.so",
+	"/lib64/samba/libgssapi-samba4.so.2",
+	"/lib64/libhogweed.so.4",
+	"/lib64/libsndfile.so.1",
+	"/lib64/libXext.so.6",
+	"/lib64/libgcc_s.so.1",
+	"/lib64/libcom_err.so.2",
+	"/lib64/libsamba-hostconfig.so.0",
+	"/lib64/samba/libgensec-samba4.so",
+	"/lib64/libsamdb.so.0",
+	"/lib64/libXfixes.so.3",
+	"/lib64/libgssapi_krb5.so.2",
+	"/lib64/libsmbclient.so.0",
+	"/lib64/libopus.so.0",
+	"/lib64/libx264.so.148",
+	"/lib64/libvpx.so.4",
+	"/lib64/libpng16.so.16",
+	"/lib64/libyajl.so.2",
+	"/lib64/libsqlite3.so.0",
+	"/lib64/libgpg-error.so.0",
+	"/lib64/libndr.so.0",
+	"/lib64/libunistring.so.2",
+	"/lib64/libcap.so.2",
+	"/lib64/libasyncns.so.0",
+	"/lib64/libpthread.so.0",
+	"/lib64/libsamba-util.so.0",
+	"/lib64/librt.so.1",
+	"/lib64/libndr-krb5pac.so.0",
+	"/lib64/libwavpack.so.1",
+	"/lib64/libfontconfig.so.1",
+	"/lib64/libdl.so.2",
+	"/lib64/libkrb5.so.3",
+	"/lib64/samba/libCHARSET3-samba4.so",
+	"/lib64/samba/libtalloc-report-samba4.so",
+	"/lib64/samba/libmessages-dgm-samba4.so",
+	"/lib64/libXdmcp.so.6",
+	"/lib64/libasound.so.2",
+	"/lib64/libpulse.so.0",
+	"/lib64/libicudata.so.59",
+	"/lib64/samba/libiov-buf-samba4.so",
+	"/lib64/libgcrypt.so.20",
+	"/lib64/libgnutls.so.30",
+	"/lib64/libgmp.so.10",
+	"/lib64/libswresample.so.2",
+	"/lib64/libavutil.so.55",
+	"/lib64/libicuuc.so.59",
+	"/lib64/libm.so.6",
+	"/lib64/samba/libutil-cmdline-samba4.so",
+	"/lib64/libmad.so.0",
+	"/lib64/libiso9660.so.10",
+	"/lib64/libao.so.4",
+	"/lib64/libcurl.so.4",
+	"/lib64/libcrypto.so.1.1",
+	"/lib64/libtdb.so.1",
+	"/lib64/samba/libcom_err-samba4.so.0",
+	"/lib64/samba/libwind-samba4.so.0",
+	"/lib64/samba/libutil-reg-samba4.so",
+	"/lib64/samba/liblibcli-lsa3-samba4.so",
+	"/lib64/libbluray.so.2",
+	"/lib64/libssh2.so.1",
+	"/lib64/libsystemd.so.0",
+	"/lib64/libfaad.so.2",
+	"/lib64/libjack.so.0",
+	"/lib64/libwebpmux.so.3",
+	"/lib64/samba/libsamdb-common-samba4.so",
+	"/lib64/samba/libldbsamba-samba4.so",
+	"/lib64/libavahi-client.so.3",
+	"/lib64/libva.so.1",
+	"/lib64/libxvidcore.so.4",
+	"/lib64/libldap-2.4.so.2",
+	"/lib64/libsasl2.so.3",
+	"/lib64/samba/libsamba3-util-samba4.so",
+	"/lib64/libwbclient.so.0",
+	"/lib64/samba/libauth-sam-reply-samba4.so",
+	"/lib64/samba/libdcerpc-samba-samba4.so",
+	"/lib64/libogg.so.0",
+	"/lib64/libdrm.so.2",
+	"/lib64/samba/libtime-basic-samba4.so",
+	"/lib64/samba/libdbwrap-samba4.so",
+	"/lib64/libsoxr.so.0",
+	"/lib64/samba/libsamba-debug-samba4.so",
+	"/lib64/libnettle.so.6",
+	"/lib64/libx265.so.116",
+	"/lib64/libopenjp2.so.7",
+	"/lib64/libcdio_paranoia.so.2",
 	"/usr/bin/mpd",
-	"/usr/lib/libz.so.1",
-	"/usr/lib/samba/libutil-tdb-samba4.so",
-	"/usr/lib/samba/libndr-samba-samba4.so",
-	"/usr/lib/libX11.so.6",
-	"/usr/lib/libva-drm.so.1",
-	"/usr/lib/libtheoradec.so.1",
-	"/usr/lib/libkrb5support.so.0",
-	"/usr/lib/libkeyutils.so.1",
-	"/usr/lib/libfreetype.so.6",
-	"/usr/lib/libsamba-credentials.so.0",
-	"/usr/lib/libgomp.so.1",
-	"/usr/lib/libaudiofile.so.1",
-	"/usr/lib/libXau.so.6",
-	"/usr/lib/libstdc++.so.6",
-	"/usr/lib/samba/libtdb-wrap-samba4.so",
-	"/usr/lib/libgme.so.0",
-	"/usr/lib/libcdio.so.16",
-	"/usr/lib/ld-linux-x86-64.so.2",
-	"/usr/lib/samba/libcli-nbt-samba4.so",
-	"/usr/lib/libldb.so.1",
-	"/usr/lib/samba/libserver-role-samba4.so",
-	"/usr/lib/libvorbis.so.0",
-	"/usr/lib/libvorbisenc.so.2",
-	"/usr/lib/pulseaudio/libpulsecommon-10.0.so",
-	"/usr/lib/libicui18n.so.59",
-	"/usr/lib/liblzma.so.5",
-	"/usr/lib/libtevent-util.so.0",
-	"/usr/lib/libmodplug.so.1",
-	"/usr/lib/libk5crypto.so.3",
-	"/usr/lib/samba/libsamba-sockets-samba4.so",
-	"/usr/lib/libbz2.so.1.0",
-	"/usr/lib/libglib-2.0.so.0",
-	"/usr/lib/samba/libreplace-samba4.so",
-	"/usr/lib/libffi.so.6",
-	"/usr/lib/samba/libutil-setid-samba4.so",
-	"/usr/lib/samba/libsmb-transport-samba4.so",
-	"/usr/lib/samba/libwinbind-client-samba4.so",
-	"/usr/lib/libsmbconf.so.0",
-	"/usr/lib/libavformat.so.57",
-	"/usr/lib/libtheora.so.0",
-	"/usr/lib/libnghttp2.so.14",
-	"/usr/lib/libtevent.so.0",
-	"/usr/lib/samba/libgse-samba4.so",
-	"/usr/lib/samba/libsamba-cluster-support-samba4.so",
-	"/usr/lib/liblber-2.4.so.2",
-	"/usr/lib/libtheoraenc.so.1",
-	"/usr/lib/libthreadutil.so.6",
-	"/usr/lib/libndr-nbt.so.0",
-	"/usr/lib/samba/liblibsmb-samba4.so",
-	"/usr/lib/samba/libhcrypto-samba4.so.5",
-	"/usr/lib/libtasn1.so.6",
-	"/usr/lib/samba/libflag-mapping-samba4.so",
-	"/usr/lib/liborc-0.4.so.0",
-	"/usr/lib/libssh.so.4",
-	"/usr/lib/libmpdclient.so.2",
-	"/usr/lib/liblz4.so.1",
-	"/usr/lib/libcdio_cdda.so.2",
-	"/usr/lib/libid3tag.so.0",
-	"/usr/lib/samba/libroken-samba4.so.19",
-	"/usr/lib/libp11-kit.so.0",
-	"/usr/lib/libvdpau.so.1",
-	"/usr/lib/libpcre.so.1",
-	"/usr/lib/libexpat.so.1",
-	"/usr/lib/libsamba-errors.so.1",
-	"/usr/lib/samba/libaddns-samba4.so",
-	"/usr/lib/libxml2.so.2",
-	"/usr/lib/libgraphite2.so.3",
-	"/usr/lib/libc.so.6",
-	"/usr/lib/libbsd.so.0",
-	"/usr/lib/samba/libserver-id-db-samba4.so",
-	"/usr/lib/libva-x11.so.1",
-	"/usr/lib/libgsm.so.1",
-	"/usr/lib/libzzip-0.so.13",
-	"/usr/lib/libpsl.so.5",
-	"/usr/lib/samba/libcli-smb-common-samba4.so",
-	"/usr/lib/samba/libheimbase-samba4.so.1",
-	"/usr/lib/samba/libsmbd-shim-samba4.so",
-	"/usr/lib/samba/libsecrets3-samba4.so",
-	"/usr/lib/libdcerpc-binding.so.0",
-	"/usr/lib/libavcodec.so.57",
-	"/usr/lib/libshout.so.3",
-	"/usr/lib/libnfs.so.11",
-	"/usr/lib/samba/libsocket-blocking-samba4.so",
-	"/usr/lib/samba/libmsrpc3-samba4.so",
-	"/usr/lib/samba/libmsghdr-samba4.so",
-	"/usr/lib/samba/libgenrand-samba4.so",
-	"/usr/lib/samba/libsys-rw-samba4.so",
+	"/lib64/libz.so.1",
+	"/lib64/samba/libutil-tdb-samba4.so",
+	"/lib64/samba/libndr-samba-samba4.so",
+	"/lib64/libX11.so.6",
+	"/lib64/libva-drm.so.1",
+	"/lib64/libtheoradec.so.1",
+	"/lib64/libkrb5support.so.0",
+	"/lib64/libkeyutils.so.1",
+	"/lib64/libfreetype.so.6",
+	"/lib64/libsamba-credentials.so.0",
+	"/lib64/libgomp.so.1",
+	"/lib64/libaudiofile.so.1",
+	"/lib64/libXau.so.6",
+	"/lib64/libstdc++.so.6",
+	"/lib64/samba/libtdb-wrap-samba4.so",
+	"/lib64/libgme.so.0",
+	"/lib64/libcdio.so.16",
+	"/lib64/ld-linux-x86-64.so.2",
+	"/lib64/samba/libcli-nbt-samba4.so",
+	"/lib64/libldb.so.1",
+	"/lib64/samba/libserver-role-samba4.so",
+	"/lib64/libvorbis.so.0",
+	"/lib64/libvorbisenc.so.2",
+	"/lib64/pulseaudio/libpulsecommon-10.0.so",
+	"/lib64/libicui18n.so.59",
+	"/lib64/liblzma.so.5",
+	"/lib64/libtevent-util.so.0",
+	"/lib64/libmodplug.so.1",
+	"/lib64/libk5crypto.so.3",
+	"/lib64/samba/libsamba-sockets-samba4.so",
+	"/lib64/libbz2.so.1.0",
+	"/lib64/libglib-2.0.so.0",
+	"/lib64/samba/libreplace-samba4.so",
+	"/lib64/libffi.so.6",
+	"/lib64/samba/libutil-setid-samba4.so",
+	"/lib64/samba/libsmb-transport-samba4.so",
+	"/lib64/samba/libwinbind-client-samba4.so",
+	"/lib64/libsmbconf.so.0",
+	"/lib64/libavformat.so.57",
+	"/lib64/libtheora.so.0",
+	"/lib64/libnghttp2.so.14",
+	"/lib64/libtevent.so.0",
+	"/lib64/samba/libgse-samba4.so",
+	"/lib64/samba/libsamba-cluster-support-samba4.so",
+	"/lib64/liblber-2.4.so.2",
+	"/lib64/libtheoraenc.so.1",
+	"/lib64/libthreadutil.so.6",
+	"/lib64/libndr-nbt.so.0",
+	"/lib64/samba/liblibsmb-samba4.so",
+	"/lib64/samba/libhcrypto-samba4.so.5",
+	"/lib64/libtasn1.so.6",
+	"/lib64/samba/libflag-mapping-samba4.so",
+	"/lib64/liborc-0.4.so.0",
+	"/lib64/libssh.so.4",
+	"/lib64/libmpdclient.so.2",
+	"/lib64/liblz4.so.1",
+	"/lib64/libcdio_cdda.so.2",
+	"/lib64/libid3tag.so.0",
+	"/lib64/samba/libroken-samba4.so.19",
+	"/lib64/libp11-kit.so.0",
+	"/lib64/libvdpau.so.1",
+	"/lib64/libpcre.so.1",
+	"/lib64/libexpat.so.1",
+	"/lib64/libsamba-errors.so.1",
+	"/lib64/samba/libaddns-samba4.so",
+	"/lib64/libxml2.so.2",
+	"/lib64/libgraphite2.so.3",
+	"/lib64/libc.so.6",
+	"/lib64/libbsd.so.0",
+	"/lib64/samba/libserver-id-db-samba4.so",
+	"/lib64/libva-x11.so.1",
+	"/lib64/libgsm.so.1",
+	"/lib64/libzzip-0.so.13",
+	"/lib64/libpsl.so.5",
+	"/lib64/samba/libcli-smb-common-samba4.so",
+	"/lib64/samba/libheimbase-samba4.so.1",
+	"/lib64/samba/libsmbd-shim-samba4.so",
+	"/lib64/samba/libsecrets3-samba4.so",
+	"/lib64/libdcerpc-binding.so.0",
+	"/lib64/libavcodec.so.57",
+	"/lib64/libshout.so.3",
+	"/lib64/libnfs.so.11",
+	"/lib64/samba/libsocket-blocking-samba4.so",
+	"/lib64/samba/libmsrpc3-samba4.so",
+	"/lib64/samba/libmsghdr-samba4.so",
+	"/lib64/samba/libgenrand-samba4.so",
+	"/lib64/samba/libsys-rw-samba4.so",
 }

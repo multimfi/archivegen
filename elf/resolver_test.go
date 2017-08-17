@@ -33,15 +33,6 @@ func (e ef) Close() error {
 	return nil
 }
 
-func mapAccess(d map[string]ef) func(f string) error {
-	return func(f string) error {
-		if _, exists := d[f]; !exists {
-			return errorNotFound{f}
-		}
-		return nil
-	}
-}
-
 func mapOpen(d map[string]ef) func(f string) (elfFile, error) {
 	return func(f string) (elfFile, error) {
 		r, exists := d[f]
@@ -53,8 +44,7 @@ func mapOpen(d map[string]ef) func(f string) (elfFile, error) {
 }
 
 func testResolve(t *testing.T, f string, re []string, data map[string]ef) {
-	eOpen = mapOpen(data)
-	fAccess = mapAccess(data)
+	open = mapOpen(data)
 
 	r, err := Resolve(f)
 	if err != nil {

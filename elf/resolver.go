@@ -3,18 +3,15 @@ package elf
 import (
 	"debug/elf"
 	"io/ioutil"
+	"os"
 	"path"
 	"strings"
-	"syscall"
 )
 
 const ldConfigDir = "/etc/ld.so.conf.d"
 
-// for testing
-var (
-	fAccess = access
-	eOpen   = elfOpen
-)
+// overridden in testing
+var open = eopen
 
 type errorNotFound struct {
 	e string
@@ -22,22 +19,6 @@ type errorNotFound struct {
 
 func (e errorNotFound) Error() string {
 	return "resolver: not found: " + e.e
-}
-
-func access(f string) error {
-	return syscall.Access(f, syscall.F_OK)
-}
-
-func search(f string, d []string, rootfs *string) (string, error) {
-	var ret string
-	for _, v := range d {
-		ret = path.Join(rPath(v, rootfs), f)
-		if err := fAccess(ret); err != nil {
-			continue
-		}
-		return ret, nil
-	}
-	return ret, errorNotFound{ret}
 }
 
 func split(a []string) []string {
@@ -48,29 +29,50 @@ func split(a []string) []string {
 	return r
 }
 
-type libOrder map[string]int
+type pathset map[string]int
 
-func (o libOrder) copy() libOrder {
-	r := make(libOrder, len(o))
-	for k, v := range o {
+func (p pathset) copy() pathset {
+	r := make(pathset, len(p))
+	for k, v := range p {
 		r[k] = v
 	}
 	return r
 }
 
-func (o libOrder) add(s ...string) libOrder {
+func tokenExpander(origin string) *strings.Replacer {
+	return strings.NewReplacer(
+		"$ORIGIN", origin,
+		"${ORIGIN}", origin,
+		"$LIB", "lib64",
+		"${LIB}", "lib64",
+		"$PLATFORM", "x86_64",
+		"${PLATFORM}", "x86_64",
+	)
+}
+
+func (p pathset) add(origin string, s ...string) pathset {
 	var (
-		c bool
-		r = o
+		sr *strings.Replacer
+		c  bool
+		r  = p
 	)
 
 	for _, v := range s {
 		if len(v) < 1 {
 			continue
 		}
-		if v[0] != '/' {
+		switch v[0] {
+		case '/', '$':
+			break
+		default:
 			continue
 		}
+
+		if sr == nil {
+			sr = tokenExpander(origin)
+		}
+		v = sr.Replace(v)
+
 		if _, exists := r[v]; exists {
 			continue
 		}
@@ -84,15 +86,21 @@ func (o libOrder) add(s ...string) libOrder {
 	return r
 }
 
-func (o libOrder) list() []string {
-	r := make([]string, len(o))
-	for k, v := range o {
+func (p pathset) list() []string {
+	i := len(p)
+	r := make([]string, i)
+
+	for k, v := range p {
 		r[v] = k
 	}
+
 	return r
 }
 
-func rPath(file string, rootfs *string) string {
+func rootprefix(file string, rootfs *string, abs bool) string {
+	if abs {
+		return file
+	}
 	if rootfs == nil {
 		return file
 	}
@@ -123,51 +131,129 @@ func (s set) list() []string {
 		r[i] = k
 		i++
 	}
+
 	return r
 }
 
-func resolv(file string, lp libOrder, rootfs *string, ret set) error {
+type context struct {
+	ldconf pathset
+	class  elf.Class
+	root   *string
+}
+
+func (c *context) search1(file string, ret set, from []string) (string, elfFile, error) {
+	var r string
+
+	for _, v := range from {
+		if file[0] != '/' {
+			// relative path
+			r = path.Join(
+				rootprefix(v, c.root, false),
+				file,
+			)
+		} else {
+			// absolute path
+			r = file
+		}
+
+		_, exists := ret[r]
+		if exists {
+			return r, nil, nil
+		}
+
+		f, err := open(r)
+		if os.IsNotExist(err) {
+			continue
+		} else if err != nil {
+			return "", nil, err
+		}
+
+		if e, ok := f.(*elf.File); ok {
+			if e.Class != c.class {
+				continue
+			}
+		}
+
+		return r, f, nil
+	}
+
+	return r, nil, errorNotFound{r}
+}
+
+func (c *context) search(file string, ret set, path ...[]string) (string, elfFile, error) {
+	var (
+		f   elfFile
+		r   string
+		err error
+	)
+
+	for _, v := range path {
+		if r, f, err = c.search1(file, ret, v); err == nil {
+			return r, f, nil
+		}
+
+		switch err.(type) {
+		case errorNotFound:
+			continue
+		default:
+			return r, nil, err
+		}
+	}
+
+	if r, f, err = c.search1(file, ret, c.ldconf.list()); err != nil {
+		switch err.(type) {
+		case errorNotFound:
+			return c.search1(file, ret, defaultLibs)
+		default:
+			return r, nil, err
+		}
+	}
+
+	return r, f, err
+}
+
+func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 	if ret.add(file) {
 		return nil
 	}
 
-	var (
-		n  []string
-		r1 []string
-		r2 []string
-	)
-
-	f, err := eOpen(file)
+	needed, err := f.DynString(elf.DT_NEEDED)
+	if err != nil {
+		return err
+	}
+	runpath, err := f.DynString(elf.DT_RUNPATH)
+	if err != nil {
+		return err
+	}
+	rpathE, err := f.DynString(elf.DT_RPATH)
 	if err != nil {
 		return err
 	}
 
-	n, err = f.DynString(elf.DT_NEEDED)
-	if err != nil {
-		return err
-	}
-	r1, err = f.DynString(elf.DT_RUNPATH)
-	if err != nil {
-		return err
-	}
-	r2, err = f.DynString(elf.DT_RPATH)
-	if err != nil {
-		return err
-	}
-
+	// opened in resolve/search
 	if err := f.Close(); err != nil {
 		return err
 	}
 
-	lp = lp.add(split(r1)...)
-	lp = lp.add(split(r2)...)
+	rpath = rpath.add(
+		path.Dir(file),
+		split(rpathE)...,
+	)
 
-	for _, v := range n {
-		s, err := search(v, lp.list(), rootfs)
+	for _, v := range needed {
+		s, fd, err := c.search(
+			v,
+			ret,
+			split(runpath),
+			rpath.list(),
+		)
 		if err != nil {
 			return err
 		}
-		if err := resolv(s, lp, rootfs, ret); err != nil {
+		if fd == nil {
+			continue
+		}
+		if err := c.resolv(s, fd, rpath, ret); err != nil {
 			return err
 		}
 		ret.add(s)
@@ -175,20 +261,13 @@ func resolv(file string, lp libOrder, rootfs *string, ret set) error {
 	return nil
 }
 
-var defaultLibs = libOrder{
-	"/usr/lib":   0,
-	"/usr/lib64": 1,
-	"/lib":       2,
-	"/lib64":     3,
-}
-
 func ldList(dir string) ([]string, error) {
-	var ret []string
+	var r []string
 
 	d, err := ioutil.ReadDir(dir)
 	if err != nil {
 		// non-fatal
-		return ret, nil
+		return r, nil
 	}
 
 	for _, v := range d {
@@ -200,23 +279,58 @@ func ldList(dir string) ([]string, error) {
 			return nil, err
 		}
 		data := strings.TrimRight(string(f), "\n")
-		ret = append(ret, strings.Split(data, "\n")...)
+		r = append(r, strings.Split(data, "\n")...)
 	}
 
-	return ret, nil
+	return r, nil
 }
 
-func resolve(file string, rootfs *string) ([]string, error) {
-	ld, err := ldList(rPath(ldConfigDir, rootfs))
+var defaultLibs = []string{
+	"/lib64",
+	"/usr/lib64",
+	"/lib",
+	"/usr/lib",
+	// freebsd
+	// "/usr/lib/compat",
+	// "/usr/local/lib",
+}
+
+func resolve(file string, rootfs *string, abs bool) ([]string, error) {
+	var ctx context
+
+	dir := rootprefix(path.Dir(file), rootfs, abs)
+
+	if config, err := ldList(
+		rootprefix(ldConfigDir, rootfs, false),
+	); err != nil {
+		return nil, err
+	} else {
+		ctx.ldconf = ctx.ldconf.add(dir, config...)
+	}
+
+	f, err := open(rootprefix(file, rootfs, abs))
 	if err != nil {
 		return nil, err
 	}
 
+	if e, ok := f.(*elf.File); !ok {
+		ctx.class = elf.ELFCLASS64
+	} else {
+		ctx.class = e.Class
+	}
+	ctx.root = rootfs
+
 	ret := make(set)
-	if err := resolv(
-		rPath(file, rootfs),
-		defaultLibs.add(ld...),
-		rootfs,
+	if i, err := readinterp(f); err == nil {
+		ret.add(rootprefix(i, rootfs, false))
+	} /* else {
+		log.Println("resolve:", err)
+	} */
+
+	if err := ctx.resolv(
+		rootprefix(file, rootfs, abs),
+		f,
+		make(pathset),
 		ret,
 	); err != nil {
 		return nil, err
@@ -227,10 +341,10 @@ func resolve(file string, rootfs *string) ([]string, error) {
 
 // Resolve resolves libraries needed by an ELF file.
 func Resolve(file string) ([]string, error) {
-	return resolve(file, nil)
+	return resolve(file, nil, true)
 }
 
-// ResolveWithRoot searches libraries from rootfs.
-func ResolveWithRoot(file, rootfs string) ([]string, error) {
-	return resolve(file, &rootfs)
+// ResolveRoot searches libraries from rootfs. If abs, file will not prefixed with rootfs.
+func ResolveRoot(file, rootfs string, abs bool) ([]string, error) {
+	return resolve(file, &rootfs, abs)
 }
