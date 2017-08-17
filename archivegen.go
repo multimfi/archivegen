@@ -36,12 +36,26 @@ func open(file *string) *os.File {
 	return r
 }
 
-func getTree(files []string) *tree.Node {
-	r, err := config.FromFiles(files...)
+func getTree(rootfs string, files []string, stdin bool) *tree.Node {
+	var (
+		r   *config.Map
+		err error
+	)
+
+	if stdin {
+		r = config.FromReaderRoot(rootfs, os.Stdin)
+	} else {
+		r, err = config.FromFilesRoot(rootfs, files...)
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
+	if r == nil {
+		log.Fatal("nil map")
+	}
+
 	return tree.Render(r)
+
 }
 
 func printTree(t *tree.Node) {
@@ -62,9 +76,18 @@ func getArchive(fmt string, dst io.Writer) archive.Writer {
 	return nil
 }
 
+func stdinPipe() bool {
+	f, err := os.Stdin.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return (f.Mode() & os.ModeCharDevice) == 0
+}
+
 var (
 	flagOut     = flag.String("out", "out.archive", "output file")
 	flagFormat  = flag.String("fmt", "tar", "file format, cpio/tar")
+	flagRootfs  = flag.String("rootfs", "", "ELF rootfs")
 	flagPrint   = flag.Bool("print", false, "print resolved tree in archivegen format")
 	flagStdout  = flag.Bool("stdout", false, "output to stdout")
 	flagVersion = flag.Bool("version", false, "version")
@@ -72,6 +95,7 @@ var (
 
 func main() {
 	log.SetFlags(log.Lshortfile)
+
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "%s %s\n\n", "archivegen", "[OPTIONS...] [FILES...]")
 		flag.PrintDefaults()
@@ -86,11 +110,13 @@ func main() {
 		fmt.Printf("build: %s\nruntime: %s\n", buildversion, runtime.Version())
 		return
 	}
-	if flag.NArg() < 1 {
+
+	p := stdinPipe()
+	if flag.NArg() < 1 && !p {
 		log.Fatal("not enough arguments")
 	}
 
-	root := getTree(flag.Args())
+	root := getTree(*flagRootfs, flag.Args(), p)
 
 	if *flagPrint {
 		printTree(root)
