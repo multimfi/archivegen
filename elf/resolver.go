@@ -164,7 +164,12 @@ func (c *context) search1(file string, ret set, from []string) (string, elfFile,
 		f, err := open(r)
 		if os.IsNotExist(err) {
 			continue
-		} else if err != nil {
+		}
+		if err != nil {
+			switch err.(type) {
+			case *elf.FormatError:
+				continue
+			}
 			return "", nil, err
 		}
 
@@ -241,6 +246,11 @@ func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 	)
 
 	for _, v := range needed {
+		// glibc libc.so != elf, musl libc.so == interpreter
+		if v == "libc.so" {
+			break
+		}
+
 		s, fd, err := c.search(
 			v,
 			ret,
