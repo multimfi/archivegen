@@ -4,7 +4,7 @@ import (
 	"io"
 
 	"archive/tar"
-	"bitbucket.org/multimfi/archivegen/archive"
+	"github.com/multimfi/archivegen/archive"
 )
 
 type writer struct {

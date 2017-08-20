@@ -26,10 +26,10 @@ default: archivegen
 all: test archivegen
 
 archivegen:
-	@go build -ldflags "-X main.buildversion=$(VERSION)" $(BUILDFLAGS) bitbucket.org/multimfi/archivegen
+	@go build -ldflags "-X main.buildversion=$(VERSION)" $(BUILDFLAGS) github.com/multimfi/archivegen
 
 goinstall:
-	go install -ldflags "-X main.buildversion=$(VERSION)" -v bitbucket.org/multimfi/archivegen
+	go install -ldflags "-X main.buildversion=$(VERSION)" -v github.com/multimfi/archivegen
 
 install: archivegen
 	install archivegen $(HOME)/.local/bin/archivegen
@@ -40,4 +40,4 @@ test:
 clean:
 	rm -v archivegen
 
-.PHONY: archivegen test
+.PHONY: archivegen

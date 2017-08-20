@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"bitbucket.org/multimfi/archivegen/archive"
-	"bitbucket.org/multimfi/archivegen/config"
+	"github.com/multimfi/archivegen/archive"
+	"github.com/multimfi/archivegen/config"
 )
 
 func writeFile(w archive.Writer, src, dst string, mode, uid, gid int) error {

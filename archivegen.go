@@ -9,11 +9,11 @@ import (
 	"runtime"
 	"text/tabwriter"
 
-	"bitbucket.org/multimfi/archivegen/archive"
-	"bitbucket.org/multimfi/archivegen/archive/cpio"
-	"bitbucket.org/multimfi/archivegen/archive/tar"
-	"bitbucket.org/multimfi/archivegen/config"
-	"bitbucket.org/multimfi/archivegen/tree"
+	"github.com/multimfi/archivegen/archive"
+	"github.com/multimfi/archivegen/archive/cpio"
+	"github.com/multimfi/archivegen/archive/tar"
+	"github.com/multimfi/archivegen/config"
+	"github.com/multimfi/archivegen/tree"
 )
 
 var (
