@@ -106,6 +106,16 @@ func (m *Map) Add(e Entry) {
 	m.m[e.Dst] = len(m.A) - 1
 }
 
+func rootprefix(file string, rootfs *string) string {
+	if rootfs == nil {
+		return file
+	}
+	if *rootfs == "" {
+		return file
+	}
+	return path.Join(*rootfs, file)
+}
+
 func (m *Map) addElf(e Entry, rootfs *string) error {
 	var (
 		r   []string
@@ -121,8 +131,10 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 		return err
 	}
 
+	src := rootprefix(e.Src, rootfs)
+
 	m.Add(Entry{
-		e.Src,
+		src,
 		e.Dst,
 		e.User,
 		e.Group,
@@ -134,7 +146,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 	for _, v := range r {
 		// '/usr/lib/lib.so'
 
-		if v == e.Src {
+		if v == src {
 			continue
 		}
 
