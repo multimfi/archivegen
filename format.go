@@ -18,12 +18,14 @@ Format:
 
   File
     f *src dst mode uid gid
+    // fr is relative
 
   Recursive
     // omitted dst will target archive root
     // src path is stripped from dst
 
     R *src *dst uid gid
+    // Rr is relative
 
   Create
     // all preceding ' ' and '\n' are stripped

@@ -41,7 +41,9 @@ func (e entry) Type() string {
 
 func (e entry) Src() (string, error) {
 	switch e.Type() {
-	case TypeRegular:
+	case
+		TypeRegularRel,
+		TypeRegular:
 		if len(e) < 2 {
 			break
 		}
@@ -56,6 +58,7 @@ func (e entry) Src() (string, error) {
 	case
 		TypeDirectory,
 		TypeRecursive,
+		TypeRecursiveRel,
 		TypeCreate,
 		TypeLinkedAbs,
 		TypeLinked:
@@ -87,7 +90,9 @@ func (e entry) Dst() (string, error) {
 		// directory dst is the src
 		return clean(e[1]), nil
 
-	case TypeRegular:
+	case
+		TypeRegularRel,
+		TypeRegular:
 		// invalid entry
 		if len(e) < 2 {
 			break
@@ -115,7 +120,8 @@ func (e entry) Dst() (string, error) {
 		return clean(e[1]), nil
 	case
 		TypeSymlink,
-		TypeRecursive:
+		TypeRecursive,
+		TypeRecursiveRel:
 		if len(e) < 3 {
 			break
 		}

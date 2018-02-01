@@ -12,14 +12,16 @@ import (
 )
 
 const (
-	TypeDirectory = "d"
-	TypeRecursive = "R"
-	TypeRegular   = "f"
-	TypeSymlink   = "l"
-	TypeCreate    = "c"
-	TypeLinked    = "L"
-	TypeLinkedAbs = "LA"
-	TypeOmit      = "-"
+	TypeDirectory    = "d"
+	TypeRecursive    = "R"
+	TypeRecursiveRel = "Rr"
+	TypeRegular      = "f"
+	TypeRegularRel   = "fr"
+	TypeSymlink      = "l"
+	TypeCreate       = "c"
+	TypeLinked       = "L"
+	TypeLinkedAbs    = "LA"
+	TypeOmit         = "-"
 )
 
 type Map struct {
@@ -70,11 +72,21 @@ func (m *Map) add(e entry, rootfs *string) error {
 	}
 
 	switch E.Type {
+	case TypeRegularRel:
+		E.Type = TypeRegular
+		fallthrough
+	case TypeRecursiveRel:
+		E.Src = rootprefix(E.Src, rootfs)
+	}
+
+	switch E.Type {
 	case
 		TypeLinkedAbs,
 		TypeLinked:
 		return m.addElf(E, rootfs)
-	case TypeRecursive:
+	case
+		TypeRecursiveRel,
+		TypeRecursive:
 		return m.addRecursive(
 			E,
 			e.isSet(idxUser),
