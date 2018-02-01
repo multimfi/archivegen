@@ -175,6 +175,9 @@ func (c *context) search1(file string, ret set, from []string) (string, elfFile,
 
 		if e, ok := f.(*elf.File); ok {
 			if e.Class != c.class {
+				if err := f.Close(); err != nil {
+					return "", nil, err
+				}
 				continue
 			}
 		}
