@@ -92,6 +92,12 @@ func (m *Map) readlink(s string, n int, c int, rootfs *string) (string, error) {
 		nil,
 	})
 
+	if x := strings.IndexByte(r, '/'); x >= 0 {
+		if x != 0 {
+			return m.readlink(np, ln, c, rootfs)
+		}
+		return m.readlink(np, 1, c, rootfs)
+	}
 	return m.readlink(np, n, c, rootfs)
 }
 

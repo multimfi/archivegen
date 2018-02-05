@@ -47,6 +47,8 @@ var expandTests = []kv{
 	{"test/link2/link3/test", "test"},
 	{"test/linkabs", "/"},
 	{"test/infinity1", "infinity"},
+	{"test/link5/link4/link6", "test/link6"},
+	{"test/dir/link7", nulstr + "/test"},
 }
 
 var expandTestData = []struct {
@@ -54,7 +56,15 @@ var expandTestData = []struct {
 }{
 	{t: TypeDirectory, src: "test"},
 	{t: TypeDirectory, src: "test/dir"},
+	{t: TypeDirectory, src: "test/link6"},
+	{t: TypeDirectory, src: "tt"},
 	{t: TypeSymlink, src: "test/dir/link3", dst: "../../"},
+	{t: TypeSymlink, src: "test/dir/link4", dst: "../dir"},
+	{t: TypeSymlink, src: "test/link5", dst: "dir/link4"},
+	{t: TypeSymlink, src: "test/dir/link6", dst: "../link6"},
+	{t: TypeSymlink, src: "test/dir/link7", dst: nulstr + "/t/link"},
+	{t: TypeSymlink, src: "t", dst: "tt"},
+	{t: TypeSymlink, src: "tt/link", dst: "../test"},
 	{t: TypeSymlink, src: "test/link1", dst: "../test"},
 	{t: TypeSymlink, src: "test/link2", dst: "dir"},
 	{t: TypeSymlink, src: "test/linkabs", dst: "/"},
@@ -77,6 +87,20 @@ var expandMapData = []Entry{
 	Entry{Src: "/", Dst: "test/linkabs"},
 	Entry{Src: "infinity2", Dst: "tmp/" + nulstr + "/test/infinity1"},
 	Entry{Src: "infinity1", Dst: "tmp/" + nulstr + "/test/infinity2"},
+	Entry{Src: "dir/link4", Dst: "tmp/" + nulstr + "/test/link5"},
+	Entry{Src: "../dir", Dst: "tmp/" + nulstr + "/test/dir/link4"},
+	Entry{Src: "../link6", Dst: "tmp/" + nulstr + "/test/dir/link6"},
+	Entry{Src: "dir/link4", Dst: "../test/link5"},
+	Entry{Src: "../dir", Dst: "../test/dir/link4"},
+	Entry{Src: "../link6", Dst: "../test/dir/link6"},
+	Entry{Src: "dir/link4", Dst: "test/link5"},
+	Entry{Src: "../dir", Dst: "test/dir/link4"},
+	Entry{Src: "../link6", Dst: "test/dir/link6"},
+	Entry{Src: "/tmp/" + nulstr + "/t/link", Dst: "tmp/" + nulstr + "/test/dir/link7"},
+	Entry{Src: "tt", Dst: "tmp/" + nulstr + "/t"},
+	Entry{Src: "../test", Dst: "tmp/" + nulstr + "/tt/link"},
+	Entry{Src: "/tmp/" + nulstr + "/t/link", Dst: "../test/dir/link7"},
+	Entry{Src: "/tmp/" + nulstr + "/t/link", Dst: "test/dir/link7"},
 }
 
 func TestExpand(t *testing.T) {
@@ -98,7 +122,8 @@ func TestExpand(t *testing.T) {
 		case TypeDirectory:
 			err = os.Mkdir(p, 0755)
 		case TypeSymlink:
-			err = os.Symlink(v.dst, p)
+			x := strings.Replace(v.dst, nulstr, tmp, -1)
+			err = os.Symlink(x, p)
 		}
 		if err != nil {
 			t.Fatal(err)
@@ -114,6 +139,8 @@ func TestExpand(t *testing.T) {
 	m := newMap()
 
 	for _, v := range expandTests {
+		v.v = strings.Replace(v.v, nulstr, tmp, -1)
+
 		p := join(tmp, v.k)
 		d := join(tmp, v.v)
 
@@ -174,7 +201,7 @@ func TestExpand(t *testing.T) {
 	}
 
 	if l1, l2 := len(m.A), len(expandMapData); l1 != l2 {
-		t.Fatalf("map array len: %d != %d %+v", l1, l2, m.A)
+		t.Fatalf("map array len: %d != %d", l1, l2)
 	}
 
 	for k, v := range m.A {
@@ -182,6 +209,7 @@ func TestExpand(t *testing.T) {
 		v2 := expandMapData[k]
 		_, td := path.Split(tmp)
 		v2.Dst = strings.Replace(v2.Dst, nulstr, td, -1)
+		v2.Src = strings.Replace(v2.Src, nulstr, td, -1)
 
 		if v1.Src != v2.Src {
 			t.Errorf("src: %d\n%q\n%q", k, v1.Src, v2.Src)
