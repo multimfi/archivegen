@@ -28,7 +28,7 @@ Format:
     // Rr is relative
 
   Create
-    // all preceding ' ' and '\n' are stripped
+    // all preceding ' ' and '\t' are stripped
     // from data and file is '\n' terminated
     // 'c file - - -	 foo  bar  ' = 'foo  bar  '
 

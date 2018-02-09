@@ -243,7 +243,7 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 
 	stat, ok := info.Sys().(*syscall.Stat_t)
 	if !ok {
-		return fmt.Errorf("config: recursive: fileinfo not *Stat_t, %v", info.Sys())
+		return fmt.Errorf("config: recursive: fileinfo not *Stat_t, %#v)", info.Sys())
 	}
 
 	if info.IsDir() {

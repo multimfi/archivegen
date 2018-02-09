@@ -20,13 +20,21 @@ func writeFile(w archive.Writer, src, dst string, mode, uid, gid int) error {
 		m = int64(mode)
 	}
 
+	t, err := statt(l)
+	if err != nil {
+		return err
+	}
+
 	hdr := &archive.Header{
-		Name: dst,
-		Size: int64(l.Size()),
-		Mode: int64(m),
-		Uid:  uid,
-		Gid:  gid,
-		Type: archive.TypeRegular,
+		Name:       dst,
+		Size:       int64(l.Size()),
+		Mode:       int64(m),
+		Uid:        uid,
+		Gid:        gid,
+		Type:       archive.TypeRegular,
+		ModTime:    l.ModTime(),
+		ChangeTime: t.ctime,
+		AccessTime: t.atime,
 	}
 	if err := w.WriteHeader(hdr); err != nil {
 		return err

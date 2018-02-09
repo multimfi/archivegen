@@ -11,12 +11,14 @@ const max32 = int64(^uint32(0))
 
 type writer struct {
 	cw *cpio.Writer
+	t  bool
 }
 
-func NewWriter(w io.Writer) archive.Writer {
+func NewWriter(w io.Writer, timestamp bool) archive.Writer {
 	cw := cpio.NewWriter(w)
 	return &writer{
 		cw: cw,
+		t:  timestamp,
 	}
 }
 
@@ -50,26 +52,35 @@ func typeconv(t archive.FileType) int {
 
 }
 
-func hdrconv(a *archive.Header) *cpio.Header {
+func hdrconv(a *archive.Header, t bool) *cpio.Header {
+	var mtime int64
+	if t && a.Type == archive.TypeRegular {
+		mtime = a.ModTime.Unix()
+	}
+
 	if a.Size >= max32 {
-		panic("filesize")
+		panic("filesize " + a.Name)
 	}
 	if a.Mode >= max32 {
-		panic("filemode")
+		panic("filemode " + a.Name)
+	}
+	if mtime >= max32 {
+		panic("mtime " + a.Name)
 	}
 
 	return &cpio.Header{
-		Name: a.Name,
-		Uid:  a.Uid,
-		Gid:  a.Gid,
-		Size: a.Size,
-		Mode: int(a.Mode),
-		Type: typeconv(a.Type),
+		Name:  a.Name,
+		Uid:   a.Uid,
+		Gid:   a.Gid,
+		Size:  a.Size,
+		Mode:  int(a.Mode),
+		Type:  typeconv(a.Type),
+		Mtime: mtime,
 	}
 }
 
 func (w *writer) WriteHeader(hdr *archive.Header) error {
-	return w.cw.WriteHeader(hdrconv(hdr))
+	return w.cw.WriteHeader(hdrconv(hdr, w.t))
 }
 
 func (w *writer) Symlink(src, dst string, uid, gid int) error {

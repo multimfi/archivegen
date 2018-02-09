@@ -4,17 +4,20 @@ import (
 	"io"
 
 	"archive/tar"
+
 	"github.com/multimfi/archivegen/archive"
 )
 
 type writer struct {
 	tw *tar.Writer
+	t  bool
 }
 
-func NewWriter(w io.Writer) archive.Writer {
+func NewWriter(w io.Writer, timestamp bool) archive.Writer {
 	tw := tar.NewWriter(w)
 	return &writer{
 		tw: tw,
+		t:  timestamp,
 	}
 }
 
@@ -46,8 +49,8 @@ func typeconv(t archive.FileType) byte {
 
 }
 
-func hdrconv(a *archive.Header) *tar.Header {
-	return &tar.Header{
+func hdrconv(a *archive.Header, t bool) *tar.Header {
+	r := &tar.Header{
 		Name:     a.Name,
 		Uid:      a.Uid,
 		Gid:      a.Gid,
@@ -55,10 +58,16 @@ func hdrconv(a *archive.Header) *tar.Header {
 		Mode:     a.Mode,
 		Typeflag: typeconv(a.Type),
 	}
+	if t && a.Type == archive.TypeRegular {
+		r.ModTime = a.ModTime
+		r.ChangeTime = a.ChangeTime
+		r.AccessTime = a.AccessTime
+	}
+	return r
 }
 
 func (w *writer) WriteHeader(hdr *archive.Header) error {
-	return w.tw.WriteHeader(hdrconv(hdr))
+	return w.tw.WriteHeader(hdrconv(hdr, w.t))
 }
 
 func (w *writer) Symlink(src, dst string, uid, gid int) error {

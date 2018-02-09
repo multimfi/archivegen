@@ -64,12 +64,12 @@ func printTree(t *tree.Node) {
 	tw.Flush()
 }
 
-func getArchive(fmt string, dst io.Writer) archive.Writer {
+func getArchive(fmt string, dst io.Writer, timestamp bool) archive.Writer {
 	switch fmt {
 	case "cpio":
-		return cpio.NewWriter(dst)
+		return cpio.NewWriter(dst, timestamp)
 	case "tar":
-		return tar.NewWriter(dst)
+		return tar.NewWriter(dst, timestamp)
 	}
 
 	log.Fatal("unknown archive format", fmt)
@@ -85,12 +85,13 @@ func stdinPipe() bool {
 }
 
 var (
-	flagOut     = flag.String("out", "out.archive", "output file")
-	flagFormat  = flag.String("fmt", "tar", "file format, cpio/tar")
-	flagRootfs  = flag.String("rootfs", "", "ELF rootfs")
-	flagPrint   = flag.Bool("print", false, "print resolved tree in archivegen format")
-	flagStdout  = flag.Bool("stdout", false, "output to stdout")
-	flagVersion = flag.Bool("version", false, "version")
+	flagOut       = flag.String("out", "out.archive", "output file")
+	flagFormat    = flag.String("fmt", "tar", "file format, cpio/tar")
+	flagRootfs    = flag.String("rootfs", "", "ELF rootfs")
+	flagPrint     = flag.Bool("print", false, "print resolved tree in archivegen format")
+	flagTimestamp = flag.Bool("timestamp", false, "preserve file timestamps")
+	flagStdout    = flag.Bool("stdout", false, "output to stdout")
+	flagVersion   = flag.Bool("version", false, "version")
 )
 
 func main() {
@@ -124,7 +125,7 @@ func main() {
 	}
 
 	out := open(flagOut)
-	in := getArchive(*flagFormat, out)
+	in := getArchive(*flagFormat, out, *flagTimestamp)
 
 	if err := root.Write(rootprefix, in); err != nil {
 		log.Fatal("error: write:", err)
