@@ -2,10 +2,13 @@ package main
 
 // TODO: copy/hardlink mask.
 
-const helpFormat = `
-Format:
+const helpFormat = `Format:
   '*' required
   '-' omit
+
+  Variable
+    // variables do not apply across files
+    $ *name value
 
   Directory
     d *dst mode uid gid

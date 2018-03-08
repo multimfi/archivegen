@@ -80,6 +80,12 @@ func maskFromEntry(e entry) (maskFunc, error) {
 	if len(e) < 2 {
 		return nil, errInvalidEntry
 	}
+
+	// trim preceding / for convenience
+	if e[idxMaskRegexp][0] == '/' {
+		e[idxMaskRegexp] = e[idxMaskRegexp][1:]
+	}
+
 	switch e[idxType] {
 	case maskReplace:
 		return regexReplaceMask(e)

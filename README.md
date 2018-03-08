@@ -2,9 +2,13 @@
 
 ```
 archivegen [OPTIONS...] [FILES...]
-
+  -X value
+    	variable
+    	e.g. '-X foo=bar -X a=b'
   -fmt string
     	file format, cpio/tar (default "tar")
+  -format
+    	print archive format
   -out string
     	output file (default "out.archive")
   -print
@@ -17,10 +21,17 @@ archivegen [OPTIONS...] [FILES...]
     	preserve file timestamps
   -version
     	version
+```
 
+## file format
+```
 Format:
   '*' required
   '-' omit
+
+  Variable
+    // variables do not apply across files
+    $ *name value
 
   Directory
     d *dst mode uid gid

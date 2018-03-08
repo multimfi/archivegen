@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"runtime"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/multimfi/archivegen/archive"
@@ -17,7 +20,7 @@ import (
 )
 
 var (
-	buildversion string
+	buildversion = "v0"
 	rootprefix   string
 )
 
@@ -36,16 +39,16 @@ func open(file *string) *os.File {
 	return r
 }
 
-func getTree(rootfs string, files []string, stdin bool) *tree.Node {
+func getTree(rootfs string, vars, files []string, stdin bool) *tree.Node {
 	var (
 		r   *config.Map
 		err error
 	)
 
 	if stdin {
-		r = config.FromReaderRoot(rootfs, os.Stdin)
+		r = config.FromReaderRoot(rootfs, vars, os.Stdin)
 	} else {
-		r, err = config.FromFilesRoot(rootfs, files...)
+		r, err = config.FromFilesRoot(rootfs, vars, files...)
 	}
 	if err != nil {
 		log.Fatal(err)
@@ -84,25 +87,55 @@ func stdinPipe() bool {
 	return (f.Mode() & os.ModeCharDevice) == 0
 }
 
+type varValue []string
+
+func (v *varValue) String() string {
+	return ""
+}
+
+var errInvalidFlag = errors.New("invalid flag")
+
+func (v *varValue) Set(val string) error {
+	x := strings.SplitN(val, "=", 2)
+	if len(x) < 2 {
+		return errInvalidFlag
+	}
+	*v = append(*v, x...)
+	return nil
+}
+
 var (
-	flagOut       = flag.String("out", "out.archive", "output file")
-	flagFormat    = flag.String("fmt", "tar", "file format, cpio/tar")
-	flagRootfs    = flag.String("rootfs", "", "ELF rootfs")
-	flagPrint     = flag.Bool("print", false, "print resolved tree in archivegen format")
-	flagTimestamp = flag.Bool("timestamp", false, "preserve file timestamps")
-	flagStdout    = flag.Bool("stdout", false, "output to stdout")
-	flagVersion   = flag.Bool("version", false, "version")
+	flagOut           = flag.String("out", "out.archive", "output file")
+	flagFormat        = flag.String("fmt", "tar", "file format, cpio/tar")
+	flagRootfs        = flag.String("rootfs", "", "ELF rootfs")
+	flagPrint         = flag.Bool("print", false, "print resolved tree in archivegen format")
+	flagTimestamp     = flag.Bool("timestamp", false, "preserve file timestamps")
+	flagStdout        = flag.Bool("stdout", false, "output to stdout")
+	flagVersion       = flag.Bool("version", false, "version")
+	flagArchiveFormat = flag.Bool("format", false, "print archive format")
 )
+
+const defaultBufSize = 1 << 24
 
 func main() {
 	log.SetFlags(log.Lshortfile)
 
+	var varX varValue
+	flag.Var(&varX, "X", "variable\n"+
+		"e.g. '-X foo=bar -X a=b'",
+	)
+
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "%s %s\n\n", "archivegen", "[OPTIONS...] [FILES...]")
+		fmt.Fprintf(os.Stderr, "%s %s\n", "archivegen", "[OPTIONS...] [FILES...]")
 		flag.PrintDefaults()
-		fmt.Fprintln(os.Stderr, helpFormat)
 	}
+
 	flag.Parse()
+
+	if *flagArchiveFormat {
+		fmt.Fprintln(os.Stderr, helpFormat)
+		return
+	}
 
 	if *flagStdout {
 		flagOut = nil
@@ -117,7 +150,7 @@ func main() {
 		log.Fatal("not enough arguments")
 	}
 
-	root := getTree(*flagRootfs, flag.Args(), p)
+	root := getTree(*flagRootfs, []string(varX), flag.Args(), p)
 
 	if *flagPrint {
 		printTree(root)
@@ -125,15 +158,19 @@ func main() {
 	}
 
 	out := open(flagOut)
-	in := getArchive(*flagFormat, out, *flagTimestamp)
+	buf := bufio.NewWriterSize(out, defaultBufSize)
+	in := getArchive(*flagFormat, buf, *flagTimestamp)
 
 	if err := root.Write(rootprefix, in); err != nil {
-		log.Fatal("error: write:", err)
+		log.Fatal("write:", err)
 	}
 	if err := in.Close(); err != nil {
-		log.Fatal("error: archive: close:", err)
+		log.Fatal("archive: close:", err)
+	}
+	if err := buf.Flush(); err != nil {
+		log.Fatal("buffer: flush:", err)
 	}
 	if err := out.Close(); err != nil {
-		log.Fatal("error: output: close:", err)
+		log.Fatal("output: close:", err)
 	}
 }

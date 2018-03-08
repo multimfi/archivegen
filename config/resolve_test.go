@@ -136,7 +136,7 @@ func TestExpand(t *testing.T) {
 	}
 
 	dir := pwd(r)
-	m := newMap()
+	m := newMap(nil)
 
 	for _, v := range expandTests {
 		v.v = strings.Replace(v.v, nulstr, tmp, -1)

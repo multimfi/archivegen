@@ -12,6 +12,7 @@ import (
 )
 
 const (
+	TypeOmit         = "-"
 	TypeDirectory    = "d"
 	TypeRecursive    = "R"
 	TypeRecursiveRel = "Rr"
@@ -21,8 +22,74 @@ const (
 	TypeCreate       = "c"
 	TypeLinked       = "L"
 	TypeLinkedAbs    = "LA"
-	TypeOmit         = "-"
+	TypeVariable     = "$"
 )
+
+type variable struct {
+	value string
+	flag  bool
+}
+
+type variableMap struct {
+	m map[string]variable
+	r *strings.Replacer
+}
+
+func newVariableMap(vars []string) *variableMap {
+	if len(vars)&0x1 != 0 {
+		panic("invalid vars")
+	}
+
+	ret := &variableMap{
+		m: make(map[string]variable),
+		r: strings.NewReplacer(),
+	}
+
+	if vars == nil {
+		return ret
+	}
+
+	r := make([]string, 0)
+	for x := 0; x < len(vars); x += 2 {
+		ret.m[vars[x]] = variable{
+			flag:  true,
+			value: vars[x+1],
+		}
+
+		r = append(r, TypeVariable+vars[x], vars[x+1])
+	}
+
+	ret.r = strings.NewReplacer(r...)
+
+	return ret
+}
+
+func (m *variableMap) add(e entry) error {
+	if len(e) < 2 {
+		return errInvalidEntry
+	}
+
+	// variables with flag variable are not mutable
+	if v, ok := m.m[e[idxSrc]]; v.flag && ok {
+		return nil
+	}
+
+	if len(e) > 2 {
+		m.m[e[idxSrc]] = variable{value: e[idxDst]}
+	} else {
+		// without dst assume empty string
+		// should this be TypeOmit?
+		m.m[e[idxSrc]] = variable{}
+	}
+
+	r := make([]string, 0, len(m.m))
+	for k, v := range m.m {
+		r = append(r, TypeVariable+k, v.value)
+	}
+	m.r = strings.NewReplacer(r...)
+
+	return nil
+}
 
 type Map struct {
 	// overlapping entries will be
@@ -34,17 +101,25 @@ type Map struct {
 
 	// lookup existance/index of entries.
 	m map[string]int
+
+	// variable map
+	v *variableMap
 }
 
-func newMap() *Map {
+func newMap(vars []string) *Map {
 	return &Map{
 		m:  make(map[string]int),
 		mm: make(maskMap),
 		A:  make([]Entry, 0),
+		v:  newVariableMap(vars),
 	}
 }
 
 func (m *Map) add(e entry, rootfs *string) error {
+	for k, _ := range e {
+		e[k] = m.v.r.Replace(e[k])
+	}
+
 	switch e.Type() {
 	case
 		maskReplace,
@@ -54,6 +129,8 @@ func (m *Map) add(e entry, rootfs *string) error {
 		return m.mm.set(e)
 	case maskClear:
 		return m.mm.del(e)
+	case TypeVariable:
+		return m.v.add(e)
 	}
 
 	E, err := e.Entry()

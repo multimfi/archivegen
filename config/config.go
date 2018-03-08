@@ -83,9 +83,9 @@ func fieldsFuncN(s string, n int, f func(rune) bool) []string {
 }
 
 // TODO: error handling
-func fromReader(rootfs *string, r io.Reader) *Map {
+func fromReader(rootfs *string, vars []string, r io.Reader) *Map {
 	s := bufio.NewScanner(r)
-	m := newMap()
+	m := newMap(vars)
 
 	var n int
 	for s.Scan() {
@@ -123,19 +123,19 @@ func fromReader(rootfs *string, r io.Reader) *Map {
 	return m
 }
 
-func FromReader(r io.Reader) *Map {
-	return fromReader(nil, r)
+func FromReader(vars []string, r io.Reader) *Map {
+	return fromReader(nil, vars, r)
 }
 
-func FromReaderRoot(rootfs string, r io.Reader) *Map {
+func FromReaderRoot(rootfs string, vars []string, r io.Reader) *Map {
 	if rootfs != "" {
-		return fromReader(&rootfs, r)
+		return fromReader(&rootfs, vars, r)
 	}
-	return fromReader(nil, r)
+	return fromReader(nil, vars, r)
 }
 
-func fromFiles(rootfs *string, files ...string) (*Map, error) {
-	cfg := newMap()
+func fromFiles(rootfs *string, vars []string, files ...string) (*Map, error) {
+	cfg := newMap(vars)
 	for _, v := range files {
 		f, err := os.Open(path.Clean(v))
 		if err != nil {
@@ -143,7 +143,7 @@ func fromFiles(rootfs *string, files ...string) (*Map, error) {
 		}
 
 		// TODO: err
-		m := FromReaderRoot(*rootfs, f)
+		m := FromReaderRoot(*rootfs, vars, f)
 
 		if m == nil {
 			return nil, fmt.Errorf("error")
@@ -161,10 +161,10 @@ func fromFiles(rootfs *string, files ...string) (*Map, error) {
 	return cfg, nil
 }
 
-func FromFiles(files ...string) (*Map, error) {
-	return fromFiles(nil, files...)
+func FromFiles(vars []string, files ...string) (*Map, error) {
+	return fromFiles(nil, vars, files...)
 }
 
-func FromFilesRoot(rootfs string, files ...string) (*Map, error) {
-	return fromFiles(&rootfs, files...)
+func FromFilesRoot(rootfs string, vars []string, files ...string) (*Map, error) {
+	return fromFiles(&rootfs, vars, files...)
 }

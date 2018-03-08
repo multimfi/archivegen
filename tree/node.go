@@ -158,7 +158,6 @@ func Render(cfg *config.Map) *Node {
 
 		tree := root
 		for i := 0; i < len(p); i++ {
-			// TODO: mask.
 			if i != len(p)-1 {
 				d := v
 				d.Src = p[i]

@@ -43,6 +43,12 @@ f omit_test2
 
 # no arguments
 L	  
+
+$ var1 testvar1
+d $var1
+$ $var1 testvar2
+d $testvar1
+d $x1
 `)
 
 var testData2 = []byte(`
@@ -51,6 +57,8 @@ d name 0 0 0
 
 d merge1
 f merge2 test
+d $testvar1
+d $x2
 `)
 
 var testMap = Map{
@@ -63,6 +71,11 @@ var testMap = Map{
 		"omit_test2": 5,
 		"merge1":     6,
 		"test":       7,
+		"testvar1":   8,
+		"testvar2":   9,
+		"$testvar1":  10,
+		"global1":    11,
+		"global2":    12,
 	},
 	A: []Entry{
 		{"name", "name", 0, 0, 0, TypeDirectory, nil},
@@ -73,6 +86,11 @@ var testMap = Map{
 		{"omit_test2", "omit_test2", 0, 0, 0644, TypeRegular, nil},
 		{"merge1", "merge1", 0, 0, 0755, TypeDirectory, nil},
 		{"merge2", "test", 0, 0, 0644, TypeRegular, nil},
+		{"testvar1", "testvar1", 0, 0, 0755, TypeDirectory, nil},
+		{"testvar2", "testvar2", 0, 0, 0755, TypeDirectory, nil},
+		{"$testvar1", "$testvar1", 0, 0, 0755, TypeDirectory, nil},
+		{"global1", "global1", 0, 0, 0755, TypeDirectory, nil},
+		{"global2", "global2", 0, 0, 0755, TypeDirectory, nil},
 	},
 
 	// TODO: include elf
@@ -105,8 +123,10 @@ func TestMapResolve(t *testing.T) {
 	log.SetFlags(log.Lshortfile)
 	log.SetOutput(ioutil.Discard)
 
-	m1 := FromReader(dataBuf1())
-	m2 := FromReader(dataBuf2())
+	vars := []string{"x", "global"}
+
+	m1 := FromReader(vars, dataBuf1())
+	m2 := FromReader(vars, dataBuf2())
 	if err := m1.Merge(m2); err != nil {
 		t.Fatal(err)
 	}
