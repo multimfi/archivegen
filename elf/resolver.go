@@ -243,8 +243,14 @@ func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 		return err
 	}
 
+	var rd string
+	if c.root != nil {
+		rd = path.Dir(strings.TrimPrefix(file, *c.root))
+	} else {
+		rd = path.Dir(file)
+	}
 	rpath = rpath.add(
-		path.Dir(file),
+		rd,
 		split(rpathE)...,
 	)
 
