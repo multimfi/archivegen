@@ -135,8 +135,59 @@ func (s set) list() []string {
 	return r
 }
 
+type fileset struct {
+	dirs  set
+	files set
+}
+
+func newfileset() fileset {
+	return fileset{
+		dirs:  make(set),
+		files: make(set),
+	}
+}
+
+func (f fileset) add(dir string) {
+	if f.dirs.add(dir) {
+		return
+	}
+
+	rdir, err := expand(dir)
+	if err != nil {
+		return
+	}
+
+	f.dirs.add(rdir)
+
+	fd, err := os.Open(rdir)
+	if err != nil {
+		return
+	}
+
+	r, err := fd.Readdirnames(-1)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, v := range r {
+		f.files.add(path.Join(dir, v))
+		f.files.add(path.Join(rdir, v))
+	}
+}
+
+func (f fileset) ok(dir, file string) bool {
+	if f.dirs == nil {
+		return true
+	}
+
+	f.add(dir)
+	_, ok := f.files[file]
+	return ok
+}
+
 type context struct {
 	err    set
+	cache  fileset
 	ldconf pathset
 	class  elf.Class
 	root   *string
@@ -146,12 +197,11 @@ func (c *context) search1(file string, ret set, from []string) (string, elfFile,
 	var r string
 
 	for _, v := range from {
+		dir := v
 		if file[0] != '/' {
 			// relative path
-			r = path.Join(
-				rootprefix(v, c.root, false),
-				file,
-			)
+			dir = rootprefix(v, c.root, false)
+			r = path.Join(dir, file)
 		} else {
 			// absolute path
 			r = file
@@ -160,6 +210,20 @@ func (c *context) search1(file string, ret set, from []string) (string, elfFile,
 		_, exists := ret[r]
 		if exists {
 			return r, nil, nil
+		}
+
+		// ignore caching for defaultlibs
+		switch v {
+		case
+			"/lib64",
+			"/usr/lib64",
+			"/lib",
+			"/usr/lib":
+			break
+		default:
+			if !c.cache.ok(dir, r) {
+				continue
+			}
 		}
 
 		f, err := open(r)
@@ -341,9 +405,14 @@ var defaultLibs = []string{
 	// "/usr/local/lib",
 }
 
-func resolve(file string, rootfs *string, abs bool) ([]string, error) {
+var defaultcache = newfileset()
+
+func resolve(file string, rootfs *string, abs, cache bool) ([]string, error) {
 	var ctx context
 	ctx.err = make(set)
+	if cache {
+		ctx.cache = defaultcache
+	}
 
 	dir := rootprefix(path.Dir(file), rootfs, abs)
 
@@ -395,10 +464,10 @@ func resolve(file string, rootfs *string, abs bool) ([]string, error) {
 
 // Resolve resolves libraries needed by an ELF file.
 func Resolve(file string) ([]string, error) {
-	return resolve(file, nil, true)
+	return resolve(file, nil, true, true)
 }
 
 // ResolveRoot searches libraries from rootfs. If abs, file will not prefixed with rootfs.
 func ResolveRoot(file, rootfs string, abs bool) ([]string, error) {
-	return resolve(file, &rootfs, abs)
+	return resolve(file, &rootfs, abs, true)
 }

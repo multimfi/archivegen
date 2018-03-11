@@ -46,7 +46,7 @@ func mapOpen(d map[string]ef) func(f string) (elfFile, error) {
 func testResolve(t *testing.T, f string, re []string, data map[string]ef) {
 	open = mapOpen(data)
 
-	r, err := Resolve(f)
+	r, err := resolve(f, nil, true, false)
 	if err != nil {
 		t.Fatal(err)
 	}
