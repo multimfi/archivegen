@@ -136,6 +136,7 @@ func (s set) list() []string {
 }
 
 type context struct {
+	err    set
 	ldconf pathset
 	class  elf.Class
 	root   *string
@@ -220,7 +221,7 @@ func (c *context) search(file string, ret set, path ...[]string) (string, elfFil
 	return r, f, err
 }
 
-func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
+func (c *context) resolv(file string, f elfFile, rpath pathset, runpath []string, ret set) error {
 	if ret.add(file) {
 		return nil
 	}
@@ -229,10 +230,13 @@ func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 	if err != nil {
 		return err
 	}
-	runpath, err := f.DynString(elf.DT_RUNPATH)
+
+	oldrunpath := runpath
+	runpath, err = f.DynString(elf.DT_RUNPATH)
 	if err != nil {
 		return err
 	}
+
 	rpathE, err := f.DynString(elf.DT_RPATH)
 	if err != nil {
 		return err
@@ -254,8 +258,18 @@ func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 		split(rpathE)...,
 	)
 
+	if len(runpath) > 0 {
+		x := tokenExpander(rd)
+		for k, _ := range runpath {
+			runpath[k] = x.Replace(runpath[k])
+		}
+	}
+
+	runpath = split(runpath)
+
 	for _, v := range needed {
-		// glibc libc.so != elf, musl libc.so == interpreter
+		// glibc libc.so is not an elf and
+		// in musl it is the interpreter
 		if v == "libc.so" {
 			break
 		}
@@ -263,20 +277,33 @@ func (c *context) resolv(file string, f elfFile, rpath pathset, ret set) error {
 		s, fd, err := c.search(
 			v,
 			ret,
-			split(runpath),
+			oldrunpath,
+			runpath,
 			rpath.list(),
 		)
 		if err != nil {
-			return err
+			switch err.(type) {
+			case errorNotFound:
+				c.err.add(v)
+				continue
+			default:
+				return err
+			}
 		}
+
 		if fd == nil {
 			continue
 		}
-		if err := c.resolv(s, fd, rpath, ret); err != nil {
+
+		delete(c.err, v)
+
+		if err := c.resolv(s, fd, rpath, runpath, ret); err != nil {
 			return err
 		}
+
 		ret.add(s)
 	}
+
 	return nil
 }
 
@@ -316,6 +343,7 @@ var defaultLibs = []string{
 
 func resolve(file string, rootfs *string, abs bool) ([]string, error) {
 	var ctx context
+	ctx.err = make(set)
 
 	dir := rootprefix(path.Dir(file), rootfs, abs)
 
@@ -350,9 +378,16 @@ func resolve(file string, rootfs *string, abs bool) ([]string, error) {
 		rootprefix(file, rootfs, abs),
 		f,
 		make(pathset),
+		nil,
 		ret,
 	); err != nil {
 		return nil, err
+	}
+
+	if len(ctx.err) > 0 {
+		return nil, errorNotFound{
+			strings.Join(ctx.err.list(), ", "),
+		}
 	}
 
 	return ret.list(), nil
