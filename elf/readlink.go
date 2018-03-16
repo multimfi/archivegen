@@ -13,6 +13,18 @@ var errTooManyLinks = errors.New("elf: readlink: max symlinks")
 
 const linkMax = 255
 
+func comp(a, b string) int {
+	for k := range a {
+		if k >= len(b) {
+			return k
+		}
+		if a[k] != b[k] {
+			return k
+		}
+	}
+	return len(a)
+}
+
 func readlink(s string, n int, c int) (string, error) {
 	s = path.Clean(s)
 
@@ -74,6 +86,9 @@ func readlink(s string, n int, c int) (string, error) {
 
 	if ln != n {
 		np = path.Join(np, s[n:])
+		if strings.Contains(r, "..") {
+			ln = comp(lx, np)
+		}
 	}
 
 	if x := strings.IndexByte(r, '/'); x >= 0 {
