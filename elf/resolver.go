@@ -163,6 +163,7 @@ func (f fileset) add(dir string) {
 	if err != nil {
 		return
 	}
+	defer fd.Close()
 
 	r, err := fd.Readdirnames(-1)
 	if err != nil {
