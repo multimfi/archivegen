@@ -30,6 +30,10 @@ const helpFormat = `Format:
     R *src *dst uid gid
     // Rr is relative
 
+  Glob
+    g *src *dst uid gid
+    // gr is relative
+
   Create
     // all preceding ' ' and '\t' are stripped
     // from data and file is '\n' terminated

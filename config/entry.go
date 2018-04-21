@@ -59,6 +59,8 @@ func (e entry) Src() (string, error) {
 		TypeDirectory,
 		TypeRecursive,
 		TypeRecursiveRel,
+		TypeGlob,
+		TypeGlobRel,
 		TypeCreate,
 		TypeLinkedAbs,
 		TypeLinked:
@@ -121,7 +123,9 @@ func (e entry) Dst() (string, error) {
 	case
 		TypeSymlink,
 		TypeRecursive,
-		TypeRecursiveRel:
+		TypeRecursiveRel,
+		TypeGlob,
+		TypeGlobRel:
 		if len(e) < 3 {
 			break
 		}
@@ -165,6 +169,9 @@ func (e entry) typeOffset(i int) int {
 	switch e.Type() {
 	case
 		TypeRecursive,
+		TypeRecursiveRel,
+		TypeGlob,
+		TypeGlobRel,
 		TypeDirectory,
 		TypeCreate:
 		i--
@@ -275,7 +282,14 @@ func (e entry) Entry() (Entry, error) {
 		return r, err
 	}
 
-	if e.Type() != TypeRecursive {
+	switch e.Type() {
+	case
+		TypeRecursive,
+		TypeRecursiveRel,
+		TypeGlob,
+		TypeGlobRel:
+		break
+	default:
 		r.Mode, err = e.Mode()
 		if err != nil {
 			return r, err

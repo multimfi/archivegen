@@ -18,6 +18,8 @@ const (
 	TypeRecursiveRel = "Rr"
 	TypeRegular      = "f"
 	TypeRegularRel   = "fr"
+	TypeGlob         = "g"
+	TypeGlobRel      = "gr"
 	TypeSymlink      = "l"
 	TypeCreate       = "c"
 	TypeLinked       = "L"
@@ -152,7 +154,9 @@ func (m *Map) add(e entry, rootfs *string) error {
 	case TypeRegularRel:
 		E.Type = TypeRegular
 		fallthrough
-	case TypeRecursiveRel:
+	case
+		TypeGlobRel,
+		TypeRecursiveRel:
 		E.Src = rootprefix(E.Src, rootfs)
 	}
 
@@ -165,6 +169,14 @@ func (m *Map) add(e entry, rootfs *string) error {
 		TypeRecursiveRel,
 		TypeRecursive:
 		return m.addRecursive(
+			E,
+			e.isSet(idxUser),
+			e.isSet(idxGroup),
+		)
+	case
+		TypeGlob,
+		TypeGlobRel:
+		return m.addGlob(
 			E,
 			e.isSet(idxUser),
 			e.isSet(idxGroup),
@@ -369,4 +381,28 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 	}
 
 	return fmt.Errorf("config: recursive: unknown file: %s", file)
+}
+
+func (m *Map) addGlob(e Entry, user, group bool) error {
+	r, err := filepath.Glob(e.Src)
+	if err != nil {
+		return err
+	}
+
+	x := mapW{m: m, e: e}
+	if user {
+		x.uid = &e.User
+	}
+	if group {
+		x.gid = &e.Group
+	}
+
+	for _, v := range r {
+		s, err := os.Lstat(v)
+		if err := x.walkFunc(v, s, err); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
