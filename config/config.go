@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 )
 
 var (
@@ -82,18 +83,60 @@ func fieldsFuncN(s string, n int, f func(rune) bool) []string {
 	return ret
 }
 
+const idx = idxData - 1
+
+func isHeredoc(data []string) string {
+	if len(data) < idxData {
+		return ""
+	}
+	if len(data[idx]) <= 2 {
+		return ""
+	}
+
+	x := strings.TrimLeft(data[idx], " \t")
+	if x[:2] != "<<" {
+		return ""
+	}
+	return x[2:]
+}
+
 // TODO: error handling
 func fromReader(rootfs *string, vars []string, r io.Reader) *Map {
 	s := bufio.NewScanner(r)
 	m := newMap(vars)
 
+	var (
+		heredoc []string
+		hereEOF string
+	)
+
 	var n int
+
 	for s.Scan() {
 		n++
 		if err := s.Err(); err != nil {
 			log.Printf("error: %q, line %d", err, n)
 			return nil
 		}
+
+		if heredoc != nil {
+			r := s.Text()
+			if r != hereEOF {
+				heredoc[idx] += r + "\n"
+				continue
+			}
+
+			heredoc[idx] = strings.TrimSuffix(heredoc[idx], "\n")
+			heredoc = append(heredoc, hereEOF)
+
+			if err := m.add(heredoc, rootfs); err != nil {
+				log.Printf("error: %s, line %d", err, n)
+				return nil
+			}
+			heredoc = nil
+			continue
+		}
+
 		d := s.Text()
 		if len(d) < 1 {
 			continue
@@ -107,6 +150,12 @@ func fromReader(rootfs *string, vars []string, r io.Reader) *Map {
 			f = fieldsFuncN(d, -1, split)
 		} else {
 			f = fieldsFuncN(d, idxData, split)
+			if x := isHeredoc(f); x != "" {
+				f[idx] = ""
+				heredoc = f
+				hereEOF = x
+				continue
+			}
 		}
 
 		if len(f) < 2 && f[idxType] != maskClear {

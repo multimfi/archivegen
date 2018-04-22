@@ -241,7 +241,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 		e.Group,
 		0755,
 		TypeRegular,
-		nil,
+		nil, "",
 	})
 
 	for _, v := range r {
@@ -271,7 +271,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 			e.Group,
 			0755,
 			TypeRegular,
-			nil,
+			nil, "",
 		})
 	}
 
@@ -344,7 +344,7 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 			intPtr(m.gid, stat.Gid),
 			mode(info),
 			TypeDirectory,
-			nil,
+			nil, "",
 		})
 		return nil
 	}
@@ -357,7 +357,7 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 			intPtr(m.gid, stat.Gid),
 			mode(info),
 			TypeRegular,
-			nil,
+			nil, "",
 		})
 		return nil
 	}
@@ -375,7 +375,7 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 			intPtr(m.gid, stat.Gid),
 			0777,
 			TypeSymlink,
-			nil,
+			nil, "",
 		})
 		return nil
 	}

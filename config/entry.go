@@ -22,6 +22,7 @@ const (
 	idxUser
 	idxGroup
 	idxData
+	idxHeredoc
 )
 
 type entry []string
@@ -33,6 +34,7 @@ type Entry struct {
 	Mode        int
 	Type        string
 	Data        []byte
+	heredoc     string
 }
 
 func (e entry) Type() string {
@@ -242,6 +244,16 @@ func (e entry) Data() []byte {
 	)
 }
 
+func (e entry) heredoc() string {
+	if e.Type() != TypeCreate {
+		return ""
+	}
+	if len(e) < idxHeredoc {
+		return ""
+	}
+	return e[idxHeredoc-1]
+}
+
 func (e entry) Root() *string {
 	switch e.Type() {
 	case
@@ -309,6 +321,8 @@ func (e entry) Entry() (Entry, error) {
 	r.Type = e.Type()
 	r.Data = e.Data()
 
+	r.heredoc = e.heredoc()
+
 	return r, nil
 }
 
@@ -316,32 +330,25 @@ func (e Entry) Format() string {
 	switch e.Type {
 	case TypeDirectory:
 		return fmt.Sprintf("%s\t\t%s\t%04o\t%d\t%d",
-			e.Type,
-			e.Dst,
-			e.Mode,
-			e.User,
-			e.Group,
+			e.Type, e.Dst, e.Mode, e.User, e.Group,
 		)
 
 	case TypeCreate:
+		if e.heredoc == "" {
+			return strings.TrimRight(
+				fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t%s",
+					e.Type, e.Dst, e.Mode, e.User, e.Group, e.Data,
+				), "\n",
+			)
+		}
 		return strings.TrimRight(
-			fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t%s",
-				e.Type,
-				e.Dst,
-				e.Mode,
-				e.User,
-				e.Group,
-				e.Data,
+			fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t<<%s\n%s%s",
+				e.Type, e.Dst, e.Mode, e.User, e.Group, e.heredoc, e.Data, e.heredoc,
 			), "\n",
 		)
 	}
 
 	return fmt.Sprintf("%s\t%s\t%s\t%04o\t%d\t%d",
-		e.Type,
-		e.Src,
-		e.Dst,
-		e.Mode,
-		e.User,
-		e.Group,
+		e.Type, e.Src, e.Dst, e.Mode, e.User, e.Group,
 	)
 }
