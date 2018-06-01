@@ -155,8 +155,8 @@ func (m *Map) add(e entry, rootfs *string) error {
 		E.Type = TypeRegular
 		fallthrough
 	case
-		TypeGlobRel,
-		TypeRecursiveRel:
+		TypeRecursiveRel,
+		TypeGlobRel:
 		E.Src = rootprefix(E.Src, rootfs)
 	}
 
@@ -172,6 +172,7 @@ func (m *Map) add(e entry, rootfs *string) error {
 			E,
 			e.isSet(idxUser),
 			e.isSet(idxGroup),
+			rootfs,
 		)
 	case
 		TypeGlob,
@@ -180,6 +181,7 @@ func (m *Map) add(e entry, rootfs *string) error {
 			E,
 			e.isSet(idxUser),
 			e.isSet(idxGroup),
+			rootfs,
 		)
 	}
 
@@ -232,7 +234,13 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 		return err
 	}
 
-	src := rootprefix(e.Src, rootfs)
+	var src string
+
+	if e.Type != TypeLinkedAbs {
+		src = rootprefix(src, rootfs)
+	} else {
+		src = e.Src
+	}
 
 	m.Add(Entry{
 		src,
@@ -285,7 +293,7 @@ func (m *Map) Merge(t *Map) error {
 	return nil
 }
 
-func (m *Map) addRecursive(e Entry, user, group bool) error {
+func (m *Map) addRecursive(e Entry, user, group bool, rootfs *string) error {
 	var uid, gid *int
 	if user {
 		uid = &e.User
@@ -293,14 +301,15 @@ func (m *Map) addRecursive(e Entry, user, group bool) error {
 	if group {
 		gid = &e.Group
 	}
-	return filepath.Walk(e.Src, mapW{m, e, uid, gid}.walkFunc)
+	return filepath.Walk(e.Src, mapW{m, e, uid, gid, rootfs}.walkFunc)
 }
 
 type mapW struct {
-	m   *Map
-	e   Entry
-	uid *int
-	gid *int
+	m      *Map
+	e      Entry
+	uid    *int
+	gid    *int
+	rootfs *string
 }
 
 func intPtr(i *int, d uint32) int {
@@ -328,6 +337,9 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 		rf = path.Clean(af)
 	}
 
+	if m.rootfs != nil {
+		rf = strings.TrimPrefix(rf, *m.rootfs)
+	}
 	rf = strings.TrimPrefix(rf, "/")
 
 	stat, ok := info.Sys().(*syscall.Stat_t)
@@ -383,13 +395,13 @@ func (m mapW) walkFunc(file string, info os.FileInfo, err error) error {
 	return fmt.Errorf("config: recursive: unknown file: %s", file)
 }
 
-func (m *Map) addGlob(e Entry, user, group bool) error {
+func (m *Map) addGlob(e Entry, user, group bool, rootfs *string) error {
 	r, err := filepath.Glob(e.Src)
 	if err != nil {
 		return err
 	}
 
-	x := mapW{m: m, e: e}
+	x := mapW{m: m, e: e, rootfs: rootfs}
 	if user {
 		x.uid = &e.User
 	}

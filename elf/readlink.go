@@ -84,11 +84,9 @@ func readlink(s string, n int, c int) (string, error) {
 		np = path.Join(s[:p+1], r)
 	}
 
-	if ln != n {
-		np = path.Join(np, s[n:])
-		if strings.Contains(r, "..") {
-			ln = comp(lx, np)
-		}
+	np = path.Join(np, s[n:])
+	if strings.Contains(r, "..") {
+		ln = comp(lx, np)
 	}
 
 	if x := strings.IndexByte(r, '/'); x >= 0 {

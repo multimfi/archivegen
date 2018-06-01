@@ -77,16 +77,18 @@ func (m *Map) readlink(s string, n int, c int, rootfs *string) (string, error) {
 
 	var np string
 	if r[0] == '/' {
-		np = r
+		if rootfs != nil {
+			np = path.Join(*rootfs, r)
+		} else {
+			np = r
+		}
 	} else {
 		np = path.Join(s[:p+1], r)
 	}
 
-	if ln != n {
-		np = path.Join(np, s[n:])
-		if strings.Contains(r, "..") {
-			ln = comp(lx, np)
-		}
+	np = path.Join(np, s[n:])
+	if strings.Contains(r, "..") {
+		ln = comp(lx, np)
 	}
 
 	if rootfs != nil {
@@ -111,6 +113,9 @@ func (m *Map) readlink(s string, n int, c int, rootfs *string) (string, error) {
 		if x != 0 {
 			return m.readlink(np, ln, c, rootfs)
 		}
+		if rootfs != nil {
+			return m.readlink(np, len(*rootfs)+1, c, rootfs)
+		}
 		return m.readlink(np, 1, c, rootfs)
 	}
 	return m.readlink(np, n, c, rootfs)
@@ -121,10 +126,18 @@ func (m *Map) expand(p string, rootfs *string) (string, error) {
 		return p, nil
 	}
 
+	if rootfs != nil && !strings.HasPrefix(p, *rootfs) {
+		return p, nil
+	}
+
 	var i int
 
 	if p[0] == '/' {
 		i++
+	}
+
+	if rootfs != nil {
+		i = len(*rootfs) + 1
 	}
 
 	return m.readlink(p, i, 0, rootfs)

@@ -153,8 +153,10 @@ func (f fileset) add(dir string) {
 	}
 
 	rdir, err := expand(dir)
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return
+	} else {
+		rdir = dir
 	}
 
 	f.dirs.add(rdir)
