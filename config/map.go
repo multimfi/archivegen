@@ -237,7 +237,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 	var src string
 
 	if e.Type != TypeLinkedAbs {
-		src = rootprefix(src, rootfs)
+		src = rootprefix(e.Src, rootfs)
 	} else {
 		src = e.Src
 	}
