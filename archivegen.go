@@ -150,7 +150,7 @@ func main() {
 		log.Fatal("not enough arguments")
 	}
 
-	root := getTree(*flagRootfs, []string(varX), flag.Args(), p)
+	root := getTree(*flagRootfs, []string(varX), flag.Args(), p && flag.NArg() < 1)
 
 	if *flagPrint {
 		printTree(root)
