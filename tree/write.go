@@ -99,7 +99,7 @@ func Write(e config.Entry, w archive.Writer) error {
 	case config.TypeSymlink:
 		return w.Symlink(e.Src, e.Dst, e.User, e.Group)
 
-	case config.TypeCreate:
+	case config.TypeCreate, config.TypeCreateNoEndl:
 		return createFile(w, e.Dst, e.Mode, e.User, e.Group, e.Data)
 	}
 

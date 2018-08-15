@@ -64,6 +64,7 @@ func (e entry) Src() (string, error) {
 		TypeGlob,
 		TypeGlobRel,
 		TypeCreate,
+		TypeCreateNoEndl,
 		TypeLinkedAbs,
 		TypeLinked:
 		if len(e) < 2 {
@@ -133,7 +134,9 @@ func (e entry) Dst() (string, error) {
 		}
 		return clean(e[2]), nil
 
-	case TypeCreate:
+	case
+		TypeCreate,
+		TypeCreateNoEndl:
 		if len(e) < 2 {
 			break
 		}
@@ -175,7 +178,8 @@ func (e entry) typeOffset(i int) int {
 		TypeGlob,
 		TypeGlobRel,
 		TypeDirectory,
-		TypeCreate:
+		TypeCreate,
+		TypeCreateNoEndl:
 		i--
 	}
 	return i
@@ -233,21 +237,33 @@ func (e entry) pGroup() (*int, error) {
 }
 
 func (e entry) Data() []byte {
-	if e.Type() != TypeCreate {
+	var end string
+	switch e.Type() {
+	case TypeCreate:
+		end = "\n"
+		break
+	case TypeCreateNoEndl:
+		break
+	default:
 		return nil
 	}
+
 	return []byte(
 		strings.TrimLeft(
 			e[idxData-1],
 			" \t",
-		) + "\n",
+		) + end,
 	)
 }
 
 func (e entry) heredoc() string {
-	if e.Type() != TypeCreate {
+	switch e.Type() {
+	case TypeCreate, TypeCreateNoEndl:
+		break
+	default:
 		return ""
 	}
+
 	if len(e) < idxHeredoc {
 		return ""
 	}
@@ -333,7 +349,7 @@ func (e Entry) Format() string {
 			e.Type, e.Dst, e.Mode, e.User, e.Group,
 		)
 
-	case TypeCreate:
+	case TypeCreate, TypeCreateNoEndl:
 		if e.heredoc == "" {
 			return strings.TrimRight(
 				fmt.Sprintf("%s\t%s\t\t%04o\t%d\t%d\t%s",

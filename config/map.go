@@ -22,6 +22,7 @@ const (
 	TypeGlobRel      = "gr"
 	TypeSymlink      = "l"
 	TypeCreate       = "c"
+	TypeCreateNoEndl = "cl"
 	TypeLinked       = "L"
 	TypeLinkedAbs    = "LA"
 	TypeVariable     = "$"
