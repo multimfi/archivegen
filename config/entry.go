@@ -66,6 +66,7 @@ func (e entry) Src() (string, error) {
 		TypeCreate,
 		TypeCreateNoEndl,
 		TypeLinkedAbs,
+		TypeLinkedGlob,
 		TypeLinked:
 		if len(e) < 2 {
 			break
@@ -118,6 +119,7 @@ func (e entry) Dst() (string, error) {
 
 	case
 		TypeLinkedAbs,
+		TypeLinkedGlob,
 		TypeLinked:
 		if len(e) > 2 && e[2] != TypeOmit {
 			return clean(e[2]), nil
@@ -274,6 +276,7 @@ func (e entry) Root() *string {
 	switch e.Type() {
 	case
 		TypeLinkedAbs,
+		TypeLinkedGlob,
 		TypeLinked:
 		break
 	default:

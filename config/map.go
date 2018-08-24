@@ -24,6 +24,7 @@ const (
 	TypeCreate       = "c"
 	TypeCreateNoEndl = "cl"
 	TypeLinked       = "L"
+	TypeLinkedGlob   = "gL"
 	TypeLinkedAbs    = "LA"
 	TypeVariable     = "$"
 )
@@ -158,10 +159,13 @@ func (m *Map) add(e entry, rootfs *string) error {
 	case
 		TypeRecursiveRel,
 		TypeGlobRel:
-		E.Src = rootprefix(E.Src, rootfs)
+		E.Src = rootPrefix(E.Src, rootfs)
 	}
 
 	switch E.Type {
+	case
+		TypeLinkedGlob:
+		return m.addElfGlob(E, rootfs)
 	case
 		TypeLinkedAbs,
 		TypeLinked:
@@ -210,7 +214,7 @@ func (m *Map) Add(e Entry) {
 	m.m[e.Dst] = len(m.A) - 1
 }
 
-func rootprefix(file string, rootfs *string) string {
+func rootPrefix(file string, rootfs *string) string {
 	if rootfs == nil {
 		return file
 	}
@@ -218,6 +222,16 @@ func rootprefix(file string, rootfs *string) string {
 		return file
 	}
 	return path.Join(*rootfs, file)
+}
+
+func trimPrefix(file string, rootfs *string) string {
+	if rootfs == nil {
+		return file
+	}
+	if *rootfs == "" {
+		return file
+	}
+	return strings.TrimPrefix(file, *rootfs)
 }
 
 func (m *Map) addElf(e Entry, rootfs *string) error {
@@ -238,7 +252,7 @@ func (m *Map) addElf(e Entry, rootfs *string) error {
 	var src string
 
 	if e.Type != TypeLinkedAbs {
-		src = rootprefix(e.Src, rootfs)
+		src = rootPrefix(e.Src, rootfs)
 	} else {
 		src = e.Src
 	}
@@ -417,5 +431,20 @@ func (m *Map) addGlob(e Entry, user, group bool, rootfs *string) error {
 		}
 	}
 
+	return nil
+}
+
+func (m *Map) addElfGlob(e Entry, rootfs *string) error {
+	r, err := filepath.Glob(rootPrefix(e.Src, rootfs))
+	if err != nil {
+		return err
+	}
+	for _, v := range r {
+		e.Src = trimPrefix(v, rootfs)
+		e.Dst = clean(e.Src)
+		if err := m.addElf(e, rootfs); err != nil {
+			return err
+		}
+	}
 	return nil
 }
