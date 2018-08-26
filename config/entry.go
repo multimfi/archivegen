@@ -127,12 +127,17 @@ func (e entry) Dst() (string, error) {
 		return clean(e[1]), nil
 	case
 		TypeSymlink,
-		TypeRecursive,
-		TypeRecursiveRel,
 		TypeGlob,
 		TypeGlobRel:
 		if len(e) < 3 {
 			break
+		}
+		return clean(e[2]), nil
+	case
+		TypeRecursive,
+		TypeRecursiveRel:
+		if len(e) < 3 {
+			return clean(e[1]), nil
 		}
 		return clean(e[2]), nil
 
