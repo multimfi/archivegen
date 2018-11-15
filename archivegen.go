@@ -113,6 +113,7 @@ var (
 	flagStdout        = flag.Bool("stdout", false, "output to stdout")
 	flagVersion       = flag.Bool("version", false, "version")
 	flagArchiveFormat = flag.Bool("format", false, "print archive format")
+	flagChdir         = flag.String("C", "", "chdir")
 )
 
 const defaultBufSize = 1 << 24
@@ -131,6 +132,12 @@ func main() {
 	}
 
 	flag.Parse()
+
+	if *flagChdir != "" {
+		if err := os.Chdir(*flagChdir); err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	if *flagArchiveFormat {
 		fmt.Fprintln(os.Stderr, helpFormat)
