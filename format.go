@@ -3,8 +3,8 @@ package main
 // TODO: copy/hardlink mask.
 
 const helpFormat = `Format:
-  '*' required
-  '-' omit
+  * required
+  - omit
 
   Variable
     // variables do not apply across files
@@ -35,15 +35,17 @@ const helpFormat = `Format:
     // gr is relative
 
   Create
-    // all preceding ' ' and '\t' are stripped
-    // from data and file is '\n' terminated
+    // all preceding ' ' and \t are stripped
+    // from data and file is \n terminated
     // 'c file - - -	 foo  bar  ' = 'foo  bar  '
 
     c *dst mode uid gid *data
+    // cl is not \n terminated
 
-  Elf
+  ELF
     // elf is prefixed with rootfs when it is not omitted
     L *elf dst mode uid gid rootfs
+    // gL is globbed
 
 Masks:
   Mode

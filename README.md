@@ -2,6 +2,8 @@
 
 ```
 archivegen [OPTIONS...] [FILES...]
+  -C string
+    	chdir
   -X value
     	variable
     	e.g. '-X foo=bar -X a=b'
@@ -26,8 +28,8 @@ archivegen [OPTIONS...] [FILES...]
 ## file format
 ```
 Format:
-  '*' required
-  '-' omit
+  * required
+  - omit
 
   Variable
     // variables do not apply across files
@@ -53,16 +55,22 @@ Format:
     R *src *dst uid gid
     // Rr is relative
 
+  Glob
+    g *src *dst uid gid
+    // gr is relative
+
   Create
-    // all preceding ' ' and '\t' are stripped
-    // from data and file is '\n' terminated
+    // all preceding ' ' and \t are stripped
+    // from data and file is \n terminated
     // 'c file - - -	 foo  bar  ' = 'foo  bar  '
 
     c *dst mode uid gid *data
+    // cl is not \n terminated
 
-  Elf
+  ELF
     // elf is prefixed with rootfs when it is not omitted
     L *elf dst mode uid gid rootfs
+    // gL is globbed
 
 Masks:
   Mode
