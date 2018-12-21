@@ -1,0 +1,128 @@
+$ mysqluid 100000
+
+d mysql - $mysqluid $mysqluid
+
+mm 0 . - 0 0
+
+g /etc/ld.so.conf.d/*.conf -
+
+fr /usr/share/mysql/mysql_system_tables.sql
+fr /usr/share/mysql/mysql_performance_tables.sql
+fr /usr/share/mysql/mysql_system_tables_data.sql
+fr /usr/share/mysql/fill_help_tables.sql
+fr /usr/share/mysql/maria_add_gis_sp_bootstrap.sql
+fr /usr/share/mysql/english/errmsg.sys
+
+L /usr/bin/pgrep
+L /usr/bin/mysql
+L /usr/sbin/mysqld usr/bin/mysqld
+
+L /bin/busybox usr/bin/busybox
+l busybox usr/bin/sh
+
+l usr/bin bin
+
+c etc/passwd - - - user:x:$mysqluid:$mysqluid::/:/bin/sh
+c etc/group  - - - user:x:$mysqluid:
+
+c etc/my.cnf - - - <<EOF
+[client]
+default-character-set = utf8
+socket = /mysql/mysqld.sock
+user   = root
+
+[mysqld]
+port    = 3306
+socket  = /mysql/mysqld.sock
+tmpdir  = /mysql
+datadir = /mysql
+
+key_buffer_size         = 16M
+max_allowed_packet      = 1M
+table_open_cache        = 64
+sort_buffer_size        = 512K
+net_buffer_length       = 8K
+read_buffer_size        = 256K
+read_rnd_buffer_size    = 512K
+myisam_sort_buffer_size = 8M
+default-storage-engine  = innodb
+max_connections         = 4096
+
+collation-server     = utf8_general_ci
+character-set-server = utf8
+default_time_zone    = '+00:00'
+
+skip-external-locking
+innodb_file_per_table
+
+bind-address = 0.0.0.0
+
+# binlog replication
+# log-bin
+# server-id    = 1
+# log-basename = master-1
+EOF
+
+c usr/bin/entrypoint 0755 - - <<EOF
+#!/usr/bin/sh
+chown -R $mysqluid:$mysqluid /mysql
+exec su user -c /usr/bin/run $@
+EOF
+
+c usr/bin/run 0755 - - <<EOF
+#!/usr/bin/sh
+set -x
+
+case "$1" in exec) exec="$1" ;; esac
+shift
+
+function run_mysql() {
+	for x in $(seq 1 5); do
+		if [ -S /mysql/mysqld.sock ]; then
+			break
+		fi
+		sleep 1
+	done
+	if [ -x /usr/bin/mysql ]; then
+		exec mysql $@
+	else
+		cd /mysql
+		exec sh
+	fi
+}
+
+if pgrep mysqld; then
+	run_mysql $@
+else
+	rm -v /mysql/mysqld.sock
+fi
+
+if [ -e "/mysql/bootstrap.sql" ]; then
+	[[ "$exec" ]] && exec mysqld $@
+	(
+		mysqld $@ > /mysql/mariadb.log 2>&1
+	)&
+	run_mysql $@
+fi
+
+cd /usr/share/mysql
+echo -e "CREATE DATABASE mysql;\nUSE mysql;" > /mysql/bootstrap.sql;
+
+cat >> /mysql/bootstrap.sql \
+	mysql_system_tables.sql        \
+	mysql_performance_tables.sql   \
+	mysql_system_tables_data.sql   \
+	fill_help_tables.sql           \
+	maria_add_gis_sp_bootstrap.sql
+
+echo "UPDATE user SET Host = '%' WHERE Host = 'localhost';" >> /mysql/bootstrap.sql
+
+mysqld $@ --bootstrap < /mysql/bootstrap.sql;
+
+[[ "$exec" ]] && exec mysqld $@
+(
+	mysqld $@ > /mysql/mariadb.log 2>&1
+)&
+
+run_mysql $@
+EOF
